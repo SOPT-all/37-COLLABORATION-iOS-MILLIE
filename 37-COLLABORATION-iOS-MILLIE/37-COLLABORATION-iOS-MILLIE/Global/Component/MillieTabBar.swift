@@ -25,7 +25,7 @@ class MillieTabBar: UITabBarController {
         let vc4 = UINavigationController(rootViewController: ViewController2())
         vc4.tabBarItem = UITabBarItem(title: "내서재", image: .navShelf, tag: 4)
         let vc5 = UINavigationController(rootViewController: ViewController())
-        vc5.tabBarItem = UITabBarItem(title: "관리", image: .navSetting, tag: 4)
+        vc5.tabBarItem = UITabBarItem(title: "관리", image: .navSetting, tag: 5)
         self.viewControllers = [vc1, vc2, vc3, vc4, vc5]
     }
     
