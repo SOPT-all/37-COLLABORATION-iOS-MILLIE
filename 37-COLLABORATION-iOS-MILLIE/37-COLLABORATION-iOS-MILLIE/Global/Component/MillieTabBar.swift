@@ -20,7 +20,7 @@ class MillieTabBar: UITabBarController {
         vc1.tabBarItem = UITabBarItem(title: "투데이", image: .navToday, tag: 1)
         let vc2 = UINavigationController(rootViewController: ViewController2())
         vc2.tabBarItem = UITabBarItem(title: "완독지수", image: .navWandok, tag: 2)
-        let vc3 = UINavigationController(rootViewController: ViewController3())
+        let vc3 = UINavigationController(rootViewController: SearchHomeViewController())
         vc3.tabBarItem = UITabBarItem(title: "검색", image: .navSearch, tag: 3)
         let vc4 = UINavigationController(rootViewController: ViewController2())
         vc4.tabBarItem = UITabBarItem(title: "내서재", image: .navShelf, tag: 4)
