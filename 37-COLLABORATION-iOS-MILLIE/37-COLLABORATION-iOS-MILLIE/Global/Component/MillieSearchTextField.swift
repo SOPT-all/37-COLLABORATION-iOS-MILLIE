@@ -14,7 +14,6 @@ final class MillieSearchTextField: BaseUIView {
     
     // MARK: - UI Components
     
-    private let searchIcon = UIImageView()
     private let textField = UITextField()
     private let scanButton = UIButton()
     private let clearButton = UIButton()
@@ -35,19 +34,15 @@ final class MillieSearchTextField: BaseUIView {
     // MARK: - SetUI
     
     override func setUI() {
-        searchIcon.do {
-            $0.image = .iconSearchGlass
-        }
-        
         textField.do {
             $0.font = FontManager.body2.font
             $0.textColor = .grey4
-            $0.addPadding()
-            $0.setPlaceholder(color: UIColor.lightGrey3)
             $0.placeholder = "검색어를 입력하세요"
             $0.layer.cornerRadius = 22
             $0.layer.masksToBounds = true
             $0.backgroundColor = .lightGrey1
+            $0.setLeftIcon(.iconSearchGlass)
+            $0.setPlaceholder(color: UIColor.grey1, font: FontManager.body2.font)
         }
         
         scanButton.do {
@@ -64,13 +59,7 @@ final class MillieSearchTextField: BaseUIView {
     // MARK: - SetLayout
     
     override func setLayout() {
-        addSubviews(searchIcon, textField, scanButton, clearButton)
-        
-        searchIcon.snp.makeConstraints {
-            $0.size.equalTo(24)
-            $0.leading.equalToSuperview().inset(12)
-            $0.centerY.equalToSuperview()
-        }
+        addSubviews(textField, scanButton, clearButton)
         
         textField.snp.makeConstraints {
             $0.edges.equalToSuperview()
