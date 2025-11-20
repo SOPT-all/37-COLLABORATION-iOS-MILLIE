@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MillieTabBar: UITabBarController {
+final class MillieTabBar: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
