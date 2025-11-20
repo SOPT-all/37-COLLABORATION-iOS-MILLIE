@@ -8,6 +8,7 @@
 import UIKit
 
 import SnapKit
+import Then
 
 class DetailBookPrimaryInfoTableViewCell: UITableViewCell {
     
@@ -42,12 +43,9 @@ class DetailBookPrimaryInfoTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        setShadows()
-    }
-    
     // MARK: - SetUI
     private func setUI() {
+        backgroundColor = .clear
         contentView.addSubviews(bookShadow1View, bookShadow2View, bookShadow3View, bookImageView, bookPrimaryInfoView)
         bookPrimaryInfoView.addSubviews(bookInfoStackView, bookStatsStackView)
         bookInfoStackView.addArrangedSubviews(bookTitleLabel, bookSubtitleLabel)
@@ -56,6 +54,24 @@ class DetailBookPrimaryInfoTableViewCell: UITableViewCell {
             $0.layer.cornerRadius = 8
             $0.contentMode = .scaleAspectFill
             $0.clipsToBounds = true
+        }
+        bookShadow1View.do {
+            $0.backgroundColor = .background
+            $0.clipsToBounds = false
+            $0.layer.cornerRadius = bookImageView.layer.cornerRadius
+            $0.layer.applyShadow(alpha: 0.24, blur: 2, spread: 0)
+        }
+        bookShadow2View.do {
+            $0.backgroundColor = .background
+            $0.clipsToBounds = false
+            $0.layer.cornerRadius = bookImageView.layer.cornerRadius
+            $0.layer.applyShadow(alpha: 0.2, blur: 24, spread: 0, x: 12, y: 8)
+        }
+        bookShadow3View.do {
+            $0.backgroundColor = .background
+            $0.clipsToBounds = false
+            $0.layer.cornerRadius = bookImageView.layer.cornerRadius
+            $0.layer.applyShadow(alpha: 0.1, blur: 8, spread: 0, x: 4, y: 8)
         }
         bookPrimaryInfoView.do {
             $0.backgroundColor = .background
@@ -128,27 +144,6 @@ class DetailBookPrimaryInfoTableViewCell: UITableViewCell {
         separatorView2.snp.makeConstraints {
             $0.width.equalTo(1)
             $0.height.equalTo(55)
-        }
-    }
-    
-    private func setShadows() {
-        bookShadow1View.do {
-            $0.backgroundColor = .background
-            $0.clipsToBounds = false
-            $0.layer.cornerRadius = bookImageView.layer.cornerRadius
-            $0.layer.applyShadow(alpha: 0.24, blur: 2, spread: 0)
-        }
-        bookShadow2View.do {
-            $0.backgroundColor = .background
-            $0.clipsToBounds = false
-            $0.layer.cornerRadius = bookImageView.layer.cornerRadius
-            $0.layer.applyShadow(alpha: 0.2, blur: 24, spread: 0, x: 12, y: 8)
-        }
-        bookShadow3View.do {
-            $0.backgroundColor = .background
-            $0.clipsToBounds = false
-            $0.layer.cornerRadius = bookImageView.layer.cornerRadius
-            $0.layer.applyShadow(alpha: 0.1, blur: 8, spread: 0, x: 4, y: 8)
         }
     }
     
