@@ -141,9 +141,9 @@ final class MillieCategoryTabs: BaseUIView {
         }
         
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(topBorder.snp.bottom)
+            $0.top.equalTo(topBorder.snp.top)
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(bottomBorder.snp.top)
+            $0.bottom.equalTo(bottomBorder.snp.bottom)
         }
         
         indicatorView.snp.makeConstraints {
@@ -182,8 +182,10 @@ extension MillieCategoryTabs {
     }
     
     func setInitialIndicatorPosition() {
-        collectionView.layoutIfNeeded()
-        setIndicatorBar(to: 0)
+        DispatchQueue.main.async {
+            self.collectionView.layoutIfNeeded()
+            self.setIndicatorBar(to: 0)
+        }
     }
 }
 
