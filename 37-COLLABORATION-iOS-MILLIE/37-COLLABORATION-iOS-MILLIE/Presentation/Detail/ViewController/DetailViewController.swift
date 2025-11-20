@@ -55,6 +55,7 @@ class DetailViewController: BaseUIViewController {
         $0.keyboardDismissMode = .interactive
         $0.contentInsetAdjustmentBehavior = .never
         $0.register(DetailBookPrimaryInfoTableViewCell.self, forCellReuseIdentifier: DetailBookPrimaryInfoTableViewCell.identifier)
+        $0.register(DetailMillieReadingReportTableViewCell.self, forCellReuseIdentifier: DetailMillieReadingReportTableViewCell.identifier)
     }
     
     override func setUI() {
@@ -146,7 +147,10 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
             tableView.backgroundColor = cell.bookImageView.image?.averageColor
             return cell
         case .millieReadingReport:
-            return UITableViewCell()
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailMillieReadingReportTableViewCell.identifier, for: indexPath) as? DetailMillieReadingReportTableViewCell else {
+                return UITableViewCell()
+            }
+            return cell
         case .description:
             return UITableViewCell()
         case .review:

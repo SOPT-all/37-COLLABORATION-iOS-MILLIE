@@ -84,9 +84,3 @@ class DetailBookStatView: BaseUIView {
         titleLabel.attributedText = attributedTitle
     }
 }
-
-#Preview {
-    DetailBookStatView().then({
-        $0.configure(bookStatType: .completeRate(139))
-    })
-}
