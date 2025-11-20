@@ -29,14 +29,14 @@ final class BookCategoryViewController: BaseUIViewController {
     
     override func setDelegate() {
         mainView.collectionView.dataSource = self
+        mainView.collectionView.delegate = self
     }
 }
 
 //MARK: - Networking
 
 extension BookCategoryViewController {
-    //TODO: - API파일 만들고 제대로 만들기..
-    
+    /// 실제 API 나중에 붙일 함수부분 지금은 SearchHomeViewController에서 더미데이터 받고있음
     private func fetchCategories() {
         
     }
@@ -61,9 +61,13 @@ extension BookCategoryViewController: UICollectionViewDataSource {
         let item = categories[indexPath.item]
         
         cell.configure(
-            title: item.title, description: item.description, image: UIImage(named: "Img_category_book2-1") //임시이미지
+            title: item.title, description: item.description, image: UIImage(named: "Img_category_book2") //임시이미지
         )
         
         return cell
     }
 }
+
+// MARK: - UICollectionViewDelegate
+
+extension BookCategoryViewController: UICollectionViewDelegate {}

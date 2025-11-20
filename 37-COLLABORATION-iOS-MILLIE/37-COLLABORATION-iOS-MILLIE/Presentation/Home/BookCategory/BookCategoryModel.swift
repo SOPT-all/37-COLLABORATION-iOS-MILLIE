@@ -8,7 +8,7 @@
 import UIKit
 
 struct BookCategoryModel {
-    let id: Int
+    let categoryId: Int
     let title: String
     let description: String
     let imageURL: String
