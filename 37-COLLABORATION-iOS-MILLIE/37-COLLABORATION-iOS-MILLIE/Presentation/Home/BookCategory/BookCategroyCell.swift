@@ -37,6 +37,7 @@ final class BookCategoryCell: UICollectionViewCell {
         super.init(frame: frame)
         setUI()
         setLayout()
+        setStyle()
     }
     
     required init?(coder: NSCoder) {
@@ -50,24 +51,29 @@ final class BookCategoryCell: UICollectionViewCell {
         contentView.addSubviews(titleLabel, descriptionLabel, bookImageView)
     }
     
+    private func setStyle() {
+        contentView.backgroundColor = .lightGrey1
+        contentView.layer.cornerRadius = 8
+        contentView.layer.masksToBounds = true
+        
+        contentView.layer.borderWidth = 1
+        contentView.layer.borderColor = UIColor.lightGrey2.cgColor
+    }
     
     private func setLayout() {
-        
-        // Title
+
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(12)
             $0.leading.equalToSuperview().inset(16)
             $0.trailing.lessThanOrEqualTo(bookImageView.snp.leading).offset(-8)
         }
         
-        // Description
         descriptionLabel.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(6)
             $0.leading.equalTo(titleLabel)
             $0.trailing.lessThanOrEqualTo(bookImageView.snp.leading).offset(-8)
         }
         
-        // Book Image
         bookImageView.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(12)
             $0.centerY.equalToSuperview()
