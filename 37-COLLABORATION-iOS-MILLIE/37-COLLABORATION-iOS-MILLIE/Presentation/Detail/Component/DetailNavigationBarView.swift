@@ -20,6 +20,7 @@ class DetailNavigationBarView: BaseUIView {
     
     // MARK: - SetUI
     override func setUI() {
+        backgroundColor = .clear
         addSubviews(backButton, rightButtonsStackView)
         rightButtonsStackView.addArrangedSubviews(likeButton, moreButton)
         
@@ -47,11 +48,11 @@ class DetailNavigationBarView: BaseUIView {
     override func setLayout() {
         backButton.snp.makeConstraints {
             $0.size.equalTo(24)
-            $0.verticalEdges.equalToSuperview()
+            $0.verticalEdges.equalToSuperview().inset(10)
             $0.leading.equalToSuperview().inset(16)
         }
         rightButtonsStackView.snp.makeConstraints {
-            $0.verticalEdges.equalToSuperview()
+            $0.verticalEdges.equalToSuperview().inset(10)
             $0.trailing.equalToSuperview().inset(16)
         }
         likeButton.snp.makeConstraints {
