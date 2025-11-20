@@ -1,5 +1,5 @@
 //
-//  DetailBookPrimaryInfoTableViewCell.swift
+//  DetailPrimaryInfoTableViewCell.swift
 //  37-COLLABORATION-iOS-MILLIE
 //
 //  Created by 김호성 on 2025.11.19.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class DetailBookPrimaryInfoTableViewCell: UITableViewCell {
+class DetailPrimaryInfoTableViewCell: UITableViewCell {
     
     // MARK: - UI Components
     let bookImageView = UIImageView()
@@ -149,7 +149,7 @@ class DetailBookPrimaryInfoTableViewCell: UITableViewCell {
     
     func configure(bookDetailModel: BookDetailModel) {
         // TODO: - TEMP 나중에 URL로 바꿀 것!
-        bookImageView.image = UIImage(resource: .imgDetailMain)
+        bookImageView.image = .imgDetailMain
         bookTitleLabel.text = bookDetailModel.bookTitle
         bookSubtitleLabel.text = "\(bookDetailModel.bookAuthor) \(bookDetailModel.bookType) · \(bookDetailModel.publishedDate)"
         bookReviewStatView.configure(bookStatType: .reviewCount(bookDetailModel.totalReviewCount))

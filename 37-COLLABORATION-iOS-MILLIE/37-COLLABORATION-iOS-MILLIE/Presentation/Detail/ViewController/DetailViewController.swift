@@ -22,7 +22,7 @@ class DetailViewController: BaseUIViewController {
         bookRate: 3.9,
         totalReviewCount: 2,
         completionRate: 80,
-        bookDescription: "\"이 행복이 영원할 거라고 생각한 적은 없었다. 그러나 이런 끝을 상상한 적도 없었다.\"예측 불가! 한국 미스터리 사상 전무후무한 반전!",
+        bookDescription: "\"이 행복이 영원할 거라고 생각한 적은 없었다. 그러나 이런 끝을 상상한 적도 없었다.\"예측 불가! 한국 미스터리 사상 전무후무한 반전! 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구",
         reviews: [
             BookDetailModel.ReviewModel(
                 reviewId: 1,
@@ -54,8 +54,9 @@ class DetailViewController: BaseUIViewController {
         $0.allowsSelection = false
         $0.keyboardDismissMode = .interactive
         $0.contentInsetAdjustmentBehavior = .never
-        $0.register(DetailBookPrimaryInfoTableViewCell.self, forCellReuseIdentifier: DetailBookPrimaryInfoTableViewCell.identifier)
+        $0.register(DetailPrimaryInfoTableViewCell.self, forCellReuseIdentifier: DetailPrimaryInfoTableViewCell.identifier)
         $0.register(DetailMillieReadingReportTableViewCell.self, forCellReuseIdentifier: DetailMillieReadingReportTableViewCell.identifier)
+        $0.register(DetailDescriptionTableViewCell.self, forCellReuseIdentifier: DetailDescriptionTableViewCell.identifier)
     }
     
     override func setUI() {
@@ -140,7 +141,7 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
         
         switch section {
         case .primaryInfo:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailBookPrimaryInfoTableViewCell.identifier, for: indexPath) as? DetailBookPrimaryInfoTableViewCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailPrimaryInfoTableViewCell.identifier, for: indexPath) as? DetailPrimaryInfoTableViewCell else {
                 return UITableViewCell()
             }
             cell.configure(bookDetailModel: bookDetailModel)
@@ -152,7 +153,11 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
             }
             return cell
         case .description:
-            return UITableViewCell()
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailDescriptionTableViewCell.identifier, for: indexPath) as? DetailDescriptionTableViewCell else {
+                return UITableViewCell()
+            }
+            cell.configure(bookDetailModel: bookDetailModel)
+            return cell
         case .review:
             // TODO: - 나연님
             return UITableViewCell()

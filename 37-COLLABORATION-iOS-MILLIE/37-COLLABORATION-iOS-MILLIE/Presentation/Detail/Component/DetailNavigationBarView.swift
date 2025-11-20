@@ -25,7 +25,7 @@ class DetailNavigationBarView: BaseUIView {
         rightButtonsStackView.addArrangedSubviews(likeButton, moreButton)
         
         backButton.do {
-            $0.setImage(UIImage(resource: .iconDetailBack), for: .normal)
+            $0.setImage(.iconDetailBack, for: .normal)
             $0.tintColor = .grey3
         }
         rightButtonsStackView.do {
@@ -35,11 +35,11 @@ class DetailNavigationBarView: BaseUIView {
             $0.distribution = .equalSpacing
         }
         likeButton.do {
-            $0.setImage(UIImage(resource: .iconDetailHeart), for: .normal)
+            $0.setImage(.iconDetailHeart, for: .normal)
             $0.tintColor = .grey3
         }
         moreButton.do {
-            $0.setImage(UIImage(resource: .iconDetailMore), for: .normal)
+            $0.setImage(.iconDetailMore, for: .normal)
             $0.tintColor = .grey3
         }
     }
