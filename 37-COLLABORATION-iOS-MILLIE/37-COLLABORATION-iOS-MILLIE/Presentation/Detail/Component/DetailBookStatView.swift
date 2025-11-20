@@ -58,15 +58,15 @@ class DetailBookStatView: BaseUIView {
         let highlighted: String
         switch bookStatType {
         case .reviewCount(let reviewCount):
-            iconImageView.image = UIImage(resource: .iconDetailReview)
+            iconImageView.image = .iconDetailReview
             highlighted = "\(reviewCount)건"
             title = "리뷰 \(highlighted)"
         case .rate(let rate):
-            iconImageView.image = UIImage(resource: .iconDetailStarEmpty)
+            iconImageView.image = .iconDetailStarEmpty
             highlighted = String(format: "%.1f", rate)
             title = "평점 \(highlighted)"
         case .completeRate(let completeRate):
-            iconImageView.image = UIImage(resource: .iconDetailBookOpen)
+            iconImageView.image = .iconDetailBookOpen
             highlighted = "\(completeRate)%"
             title = "완독률 \(highlighted)"
         }

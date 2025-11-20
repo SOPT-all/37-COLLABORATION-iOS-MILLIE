@@ -33,7 +33,7 @@ class DetailMillieReadingReportTableViewCell: UITableViewCell {
         backgroundColor = .background
         contentView.addSubviews(iconImageView, titleLabel)
         iconImageView.do {
-            $0.image = UIImage(resource: .iconDetailReport)
+            $0.image = .iconDetailReport
             $0.contentMode = .scaleAspectFit
         }
         titleLabel.do {
