@@ -78,7 +78,7 @@ extension SearchHomeViewController: UICollectionViewDataSource {
         cell.configure(
             title: item.title,
             description: item.description,
-            image: UIImage(named: "Img_category_book2-1")
+            image: UIImage(named: item.imageURL)
         )
 
         return cell
