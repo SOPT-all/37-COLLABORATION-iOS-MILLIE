@@ -10,7 +10,7 @@ import UIKit
 enum BookCategoryDummy {
 
     static let categories: [BookCategoryModel] = [
-        BookCategoryModel(categoryId: 1, title: "소설", description: "추리/스릴러, 스파이, 범죄 스릴러 등", imageURL: "Img_category_book2"),
+        BookCategoryModel(categoryId: 1, title: "소설", description: "추리/스릴러, 스파이, 범죄 스릴러 등", imageURL: "Img_category_book2-1"),
         BookCategoryModel(categoryId: 2, title: "시/에세이", description: "에세이, 일기, 감성 글귀 등", imageURL: "Img_category_book3"),
         BookCategoryModel(categoryId: 3, title: "경제/경영", description: "투자, 돈, 마케팅, 조직, 경영 전략", imageURL: "Img_category_book4"),
         BookCategoryModel(categoryId: 4, title: "자기계발", description: "동기부여, 습관, 루틴, 능력 개발", imageURL: "Img_category_book5"),

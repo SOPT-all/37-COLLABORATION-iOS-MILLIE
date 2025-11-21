@@ -62,7 +62,7 @@ extension BookCategoryViewController: UICollectionViewDataSource {
         let item = categories[indexPath.item]
         
         cell.configure(
-            title: item.title, description: item.description, image: UIImage(named: "Img_category_book2") //임시이미지
+            title: item.title, description: item.description, image: UIImage(named: item.imageURL)
         )
         
         return cell
