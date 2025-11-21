@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MillieTabBar: UITabBarController {
+final class MillieTabBar: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,8 +34,8 @@ class MillieTabBar: UITabBarController {
         
         // 배경
         barAppearance.configureWithOpaqueBackground()
-        barAppearance.backgroundColor = .background
-        barAppearance.shadowColor = .grey3
+        barAppearance.backgroundColor = .lightGrey1
+        barAppearance.shadowColor = .lightGrey2
         
         // 아이콘 기본 색상 설정
         barAppearance.stackedLayoutAppearance.normal.iconColor = .grey3
