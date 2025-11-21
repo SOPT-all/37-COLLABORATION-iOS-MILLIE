@@ -8,27 +8,25 @@
 import UIKit
 
 extension UITextField {
-    func addLeftPadding(_ width: CGFloat = 10) {
-        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: width, height: self.frame.height))
-        self.leftView = paddingView
-        self.leftViewMode = ViewMode.always
+    func setLeftIcon(_ image: UIImage, inset: CGFloat = 12, size: CGFloat = 24, rightSpacing: CGFloat = 4.5) {
+        let totalWidth = inset + size + rightSpacing
+        let container = UIView(frame: CGRect(x: 0, y: 0, width: totalWidth, height: size))
+        
+        let iconView = UIImageView(image: image)
+        iconView.contentMode = .scaleAspectFit
+        iconView.frame = CGRect(x: inset, y: 0, width: size, height: size)
+        
+        container.addSubview(iconView)
+        
+        self.leftView = container
+        self.leftViewMode = .always
     }
     
-    func addRightPadding(_ width: CGFloat = 10) {
-        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: width, height: self.frame.height))
-        self.rightView = paddingView
-        self.rightViewMode = ViewMode.always
-    }
-    
-    func addPadding(leftAmount: CGFloat = 10, rightAmount: CGFloat = 10) {
-        addLeftPadding(leftAmount)
-        addRightPadding(rightAmount)
-    }
-    
-    func setPlaceholder(color: UIColor) {
+    func setPlaceholder(color: UIColor, font: UIFont) {
         guard let string = self.placeholder else {
             return
         }
-        attributedPlaceholder = NSAttributedString(string: string, attributes: [.foregroundColor: color])
+        attributedPlaceholder = NSAttributedString(string: string, attributes: [.foregroundColor: color, .font: font])
+        
     }
 }
