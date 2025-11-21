@@ -38,7 +38,8 @@ final class BookCategoryViewController: BaseUIViewController {
 extension BookCategoryViewController {
     /// 실제 API 나중에 붙일 함수부분 지금은 SearchHomeViewController에서 더미데이터 받고있음
     private func fetchCategories() {
-        
+        categories = BookCategoryDummy.categories
+        mainView.collectionView.reloadData()
     }
 }
 
