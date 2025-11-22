@@ -52,12 +52,12 @@ final class BookCategoryCell: UICollectionViewCell {
     }
     
     private func setStyle() {
-        contentView.backgroundColor = .lightGrey1
+        contentView.backgroundColor = .milleWhite
         contentView.layer.cornerRadius = 8
         contentView.layer.masksToBounds = true
         
         contentView.layer.borderWidth = 1
-        contentView.layer.borderColor = UIColor.lightGrey2.cgColor
+        contentView.layer.borderColor = UIColor.lightGrey1.cgColor
     }
     
     private func setLayout() {
