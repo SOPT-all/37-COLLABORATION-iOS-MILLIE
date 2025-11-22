@@ -77,6 +77,7 @@ class DetailPrimaryInfoTableViewCell: UITableViewCell {
             $0.backgroundColor = .background
             $0.layer.cornerRadius = 28
             $0.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMaxXMinYCorner)
+            $0.layer.applyShadow(alpha: 0.1, blur: 20, spread: 0, y: -5)
         }
         bookInfoStackView.do {
             $0.axis = .vertical
