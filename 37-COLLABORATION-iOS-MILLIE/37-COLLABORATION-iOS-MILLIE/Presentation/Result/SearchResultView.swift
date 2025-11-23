@@ -14,8 +14,14 @@ final class SearchResultView: BaseUIView {
     
     // MARK: - UI Components
     
+    private let navigationTitleLabel = UILabel()
+    private let navigationButton = UIButton()
     private let titleLabel = UILabel()
     private let totalBookCountLabel = UILabel()
+    private let textField = MillieSearchTextField()
+    private let adBannerImageView = UIImageView()
+    
+    lazy var categoryTabs = MillieCategoryTabs()
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -51,31 +57,79 @@ final class SearchResultView: BaseUIView {
         
         backgroundColor = .systemBackground
         
+        navigationTitleLabel.do {
+            $0.text = "검색결과"
+            $0.font = FontManager.subhead5.font
+        }
+        
+        navigationButton.do {
+            $0.setImage(UIImage(named: "arrow_right"), for: .normal)
+        }
+        
         titleLabel.do {
             $0.text = "도서"
-            $0.font = UIFont.FontType.font(.bold, ofsize: 20)
+            $0.font = FontManager.headline.font
             $0.textColor = .black
         }
         
         totalBookCountLabel.do {
             $0.text = "0"  // 임시값입니다 후에 업데이트됨
-            $0.font = UIFont.FontType.font(.regular, ofsize: 14)
+            $0.font = FontManager.body1.font
             $0.textColor = UIColor(named: "millie_Purple")
+        }
+        
+        adBannerImageView.do {
+            $0.image = UIImage(named: "ad_banner")
+            $0.contentMode = .scaleAspectFill
+            $0.clipsToBounds = true
+        }
+        
+        categoryTabs.do {
+            $0.size = .small
         }
     }
     
     override func setUI() {
         addSubviews(
+            navigationTitleLabel,
+            navigationButton,
+            textField,
+            categoryTabs,
             titleLabel,
             totalBookCountLabel,
-            collectionView
+            collectionView,
+            adBannerImageView
         )
     }
     
     override func setLayout() {
         
+        navigationTitleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(63)
+            $0.leading.equalToSuperview().inset(148)
+        }
+        
+        navigationButton.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(63)
+            $0.leading.equalToSuperview().inset(13)
+
+        }
+        
+        textField.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide).offset(20)
+            $0.centerX.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(18) // 스냅킷에서 이 설정 꼭 해주세요
+
+        }
+        
+        categoryTabs.snp.makeConstraints {
+            $0.top.equalTo(textField.snp.bottom).offset(16)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(45)
+        }
+        
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(200)
+            $0.top.equalTo(categoryTabs.snp.bottom).offset(20)
             $0.leading.equalToSuperview().inset(20)
         }
         
@@ -87,7 +141,14 @@ final class SearchResultView: BaseUIView {
         collectionView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom)
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(safeAreaLayoutGuide)
+            $0.bottom.equalTo(adBannerImageView.snp.top)
+        }
+        
+        adBannerImageView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(23)
+            $0.bottom.equalToSuperview().inset(109)
+            $0.height.equalTo(84)
+            $0.width.equalTo(329)
         }
     }
     
