@@ -28,7 +28,7 @@ final class SearchResultView: BaseUIView {
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = 16
+        layout.minimumLineSpacing = 10
         layout.sectionInset = UIEdgeInsets(top: 16, left: 21, bottom: 16, right: 21)
 
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -156,7 +156,7 @@ final class SearchResultView: BaseUIView {
         }
         
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(-10)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
             $0.height.equalTo(800) 
