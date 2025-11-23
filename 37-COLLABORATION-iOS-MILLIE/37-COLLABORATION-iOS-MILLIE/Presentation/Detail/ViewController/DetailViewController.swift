@@ -48,12 +48,13 @@ class DetailViewController: BaseUIViewController {
     // MARK: - UI Components
     let detailNavigationBarView = DetailNavigationBarView()
     
-    let mainTableView = UITableView().then {
+    let mainTableView = UITableView(frame: .zero, style: .grouped).then {
         $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
         $0.allowsSelection = false
         $0.keyboardDismissMode = .interactive
-        $0.contentInsetAdjustmentBehavior = .never
+        $0.sectionHeaderHeight = 0
+        $0.tableFooterView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: CGFloat.leastNormalMagnitude, height: CGFloat.leastNormalMagnitude)))
         $0.register(DetailPrimaryInfoTableViewCell.self, forCellReuseIdentifier: DetailPrimaryInfoTableViewCell.identifier)
         $0.register(DetailMillieReadingReportTableViewCell.self, forCellReuseIdentifier: DetailMillieReadingReportTableViewCell.identifier)
         $0.register(DetailDescriptionTableViewCell.self, forCellReuseIdentifier: DetailDescriptionTableViewCell.identifier)
@@ -61,8 +62,10 @@ class DetailViewController: BaseUIViewController {
         $0.register(DetailRelatedBookTableViewCell.self, forCellReuseIdentifier: DetailRelatedBookTableViewCell.identifier)
     }
     
+    let detailBottomBarView = DetailBottomBarView()
+    
     override func setUI() {
-        view.addSubviews(mainTableView, detailNavigationBarView)
+        view.addSubviews(mainTableView, detailNavigationBarView, detailBottomBarView)
     }
     
     override func setLayout() {
@@ -71,7 +74,12 @@ class DetailViewController: BaseUIViewController {
             $0.horizontalEdges.equalToSuperview()
         }
         mainTableView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.horizontalEdges.equalToSuperview()
+        }
+        detailBottomBarView.snp.makeConstraints {
+            $0.top.equalTo(mainTableView.snp.bottom)
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
     
