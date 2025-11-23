@@ -32,6 +32,7 @@ final class SearchResultViewController: BaseUIViewController {
         registerCell()
         setDelegate()
         rootView.updateBookCount(searchResultData.bookCount)
+        rootView.categoryTabs.setInitialIndicatorPosition()
     }
     
     // MARK: - Custom Method

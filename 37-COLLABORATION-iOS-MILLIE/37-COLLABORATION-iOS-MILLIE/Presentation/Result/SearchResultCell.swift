@@ -55,23 +55,23 @@ class SearchResultCell: UICollectionViewCell {
         }
         
         bookTitleLabel.do {
-            $0.font = UIFont.FontType.font(.bold, ofsize: 15)
+            $0.font = FontManager.subhead3.font
             $0.textColor = .black
             $0.numberOfLines = 2
         }
         
         bookAuthorLabel.do {
-            $0.font = UIFont.FontType.font(.regular, ofsize: 13)
+            $0.font = FontManager.subbody2.font
             $0.textColor = .grey2
         }
         
         readingProgressLabel.do {
-            $0.font = UIFont.FontType.font(.regular, ofsize: 14)
+            $0.font = FontManager.body1.font
             $0.textColor = .grey2
         }
         
         totalReadingTimeLabel.do {
-            $0.font = UIFont.FontType.font(.regular, ofsize: 12)
+            $0.font = FontManager.caption3.font
             $0.textColor = .grey2
         }
     }
