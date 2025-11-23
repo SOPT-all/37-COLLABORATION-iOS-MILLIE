@@ -29,9 +29,8 @@ final class SearchResultView: BaseUIView {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = 16
-        layout.minimumInteritemSpacing = 10  
-        layout.sectionInset = UIEdgeInsets(top: 16, left: 11, bottom: 16, right: 11)
-        
+        layout.sectionInset = UIEdgeInsets(top: 16, left: 21, bottom: 16, right: 21)
+
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = .clear
         cv.showsVerticalScrollIndicator = false

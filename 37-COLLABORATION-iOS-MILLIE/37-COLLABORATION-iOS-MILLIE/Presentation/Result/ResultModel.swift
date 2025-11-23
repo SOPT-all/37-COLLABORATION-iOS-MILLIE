@@ -54,7 +54,7 @@ extension SearchResultResponse {
         message: "도서 검색 조회 성공",
         data: SearchResultData(
             keyword: "홍학",
-            bookCount: 2,
+            bookCount: 3,
             books: [
                 Book(
                     bookId: 1,
@@ -75,6 +75,16 @@ extension SearchResultResponse {
                     completionTime: 247,
                     isAudiobook: true,
                     voiceActor: "임은지"
+                ),
+                Book(
+                    bookId: 3,
+                    bookCoverImageUrl: "",
+                    bookTitle: "달과 6펜스",
+                    bookAuthor: "서머싯 몸",
+                    completionRate: 45,
+                    completionTime: 180,
+                    isAudiobook: false,
+                    voiceActor: nil
                 )
             ],
             banner: Banner(
