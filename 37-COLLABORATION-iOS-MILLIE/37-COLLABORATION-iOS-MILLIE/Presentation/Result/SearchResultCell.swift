@@ -89,14 +89,14 @@ class SearchResultCell: UICollectionViewCell {
     private func setLayout() {
         
         bookImageView.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(21.5)
+            $0.centerX.equalToSuperview()
             $0.top.equalToSuperview().inset(10)
             $0.width.equalTo(103)
             $0.height.equalTo(150)
         }
         
         bookTitleLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(27)
+            $0.leading.equalToSuperview().inset(5.5)
             $0.top.equalTo(bookImageView.snp.bottom).offset(10)
         }
         

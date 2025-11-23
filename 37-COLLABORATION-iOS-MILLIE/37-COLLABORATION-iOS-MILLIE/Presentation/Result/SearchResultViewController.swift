@@ -94,15 +94,25 @@ extension SearchResultViewController: UICollectionViewDataSource {
 extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let horizontalInset: CGFloat = 11
-        let horizontalSpacing: CGFloat = 10
-        let numberOfItemsPerRow: CGFloat = 3
+        let cellWidth: CGFloat = 103
+        let cellHeight: CGFloat = 180
         
-        let totalHorizontalSpacing = (horizontalInset * 2) + (horizontalSpacing * (numberOfItemsPerRow - 1))
-        let width = (collectionView.frame.width - totalHorizontalSpacing) / numberOfItemsPerRow
-        let height: CGFloat = 180
+        return CGSize(width: cellWidth, height: cellHeight)
+    }
+    
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        let totalWidth = collectionView.bounds.width
+        let sectionInset: CGFloat = 21
+        let cellWidth: CGFloat = 103
+        let numberOfCells: CGFloat = 3
         
-        return CGSize(width: width, height: height)
+        let availableWidth = totalWidth - (sectionInset * 2)
+        let totalCellWidth = cellWidth * numberOfCells
+        let totalSpacing = availableWidth - totalCellWidth
+        let numberOfGaps = numberOfCells - 1
+        
+        return max(0, totalSpacing / numberOfGaps)
     }
 }
 
