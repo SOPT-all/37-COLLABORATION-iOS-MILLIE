@@ -58,6 +58,7 @@ class DetailViewController: BaseUIViewController {
         $0.register(DetailMillieReadingReportTableViewCell.self, forCellReuseIdentifier: DetailMillieReadingReportTableViewCell.identifier)
         $0.register(DetailDescriptionTableViewCell.self, forCellReuseIdentifier: DetailDescriptionTableViewCell.identifier)
         $0.register(DetailReadingDataTableViewCell.self, forCellReuseIdentifier: DetailReadingDataTableViewCell.identifier)
+        $0.register(DetailRelatedBookTableViewCell.self, forCellReuseIdentifier: DetailRelatedBookTableViewCell.identifier)
     }
     
     override func setUI() {
@@ -168,7 +169,10 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
             }
             return cell
         case .relatedBook:
-            return UITableViewCell()
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailRelatedBookTableViewCell.identifier, for: indexPath) as? DetailRelatedBookTableViewCell else {
+                return UITableViewCell()
+            }
+            return cell
         }
     }
 }
