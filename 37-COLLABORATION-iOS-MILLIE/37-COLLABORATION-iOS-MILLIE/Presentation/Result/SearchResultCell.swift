@@ -17,6 +17,7 @@ class SearchResultCell: UICollectionViewCell {
     private let bookImageView = UIImageView()
     private let bookTitleLabel = UILabel()
     private let bookAuthorLabel = UILabel()
+    private let readingProgressImageView = UIImageView()
     private let readingProgressLabel = UILabel()
     private let totalReadingTimeLabel = UILabel()
     
@@ -65,13 +66,18 @@ class SearchResultCell: UICollectionViewCell {
             $0.textColor = .grey2
         }
         
+        readingProgressImageView.do {
+            $0.image = UIImage(named: "reading_progress_image")
+            $0.contentMode = .scaleAspectFit
+        }
+        
         readingProgressLabel.do {
             $0.font = FontManager.body1.font
             $0.textColor = .grey2
         }
         
         totalReadingTimeLabel.do {
-            $0.font = FontManager.caption3.font
+            $0.font = FontManager.body1.font
             $0.textColor = .grey2
         }
     }
@@ -81,6 +87,7 @@ class SearchResultCell: UICollectionViewCell {
             bookImageView,
             bookTitleLabel,
             bookAuthorLabel,
+            readingProgressImageView,
             readingProgressLabel,
             totalReadingTimeLabel
         )
@@ -105,14 +112,20 @@ class SearchResultCell: UICollectionViewCell {
             $0.top.equalTo(bookTitleLabel.snp.bottom)
         }
         
-        readingProgressLabel.snp.makeConstraints {
+        readingProgressImageView.snp.makeConstraints {
             $0.leading.equalTo(bookTitleLabel)
-            $0.top.equalTo(bookAuthorLabel.snp.bottom).offset(1)
+            $0.top.equalTo(bookAuthorLabel.snp.bottom).offset(4)
+            $0.width.height.equalTo(15)
+        }
+        
+        readingProgressLabel.snp.makeConstraints {
+            $0.leading.equalTo(readingProgressImageView.snp.trailing).offset(2)
+            $0.centerY.equalTo(readingProgressImageView)
         }
         
         totalReadingTimeLabel.snp.makeConstraints {
             $0.leading.equalTo(readingProgressLabel.snp.trailing).offset(2)
-            $0.top.equalTo(bookAuthorLabel.snp.bottom).offset(1)
+            $0.top.equalTo(readingProgressLabel)
         }
     }
     
