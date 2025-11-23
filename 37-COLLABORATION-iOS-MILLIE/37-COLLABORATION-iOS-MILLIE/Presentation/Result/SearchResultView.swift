@@ -20,6 +20,8 @@ final class SearchResultView: BaseUIView {
     private let totalBookCountLabel = UILabel()
     private let textField = MillieSearchTextField()
     private let adBannerImageView = UIImageView()
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
     
     lazy var categoryTabs = MillieCategoryTabs()
     
@@ -95,10 +97,15 @@ final class SearchResultView: BaseUIView {
             navigationButton,
             textField,
             categoryTabs,
+            scrollView,
+            adBannerImageView
+        )
+        
+        scrollView.addSubview(contentView)
+        contentView.addSubviews(
             titleLabel,
             totalBookCountLabel,
-            collectionView,
-            adBannerImageView
+            collectionView
         )
     }
     
@@ -128,8 +135,19 @@ final class SearchResultView: BaseUIView {
             $0.height.equalTo(45)
         }
         
+        scrollView.snp.makeConstraints {
+            $0.top.equalTo(categoryTabs.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(adBannerImageView.snp.top)
+        }
+        
+        contentView.snp.makeConstraints {
+            $0.edges.equalTo(scrollView)
+            $0.width.equalTo(scrollView)
+        }
+        
         titleLabel.snp.makeConstraints {
-            $0.top.equalTo(categoryTabs.snp.bottom).offset(20)
+            $0.top.equalToSuperview().offset(20)
             $0.leading.equalToSuperview().inset(20)
         }
         
@@ -141,7 +159,8 @@ final class SearchResultView: BaseUIView {
         collectionView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom)
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(adBannerImageView.snp.top)
+            $0.bottom.equalToSuperview()
+            $0.height.equalTo(800) 
         }
         
         adBannerImageView.snp.makeConstraints {
