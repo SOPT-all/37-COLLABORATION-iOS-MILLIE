@@ -28,7 +28,6 @@ final class SearchResultViewController: BaseUIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setStyle()
         registerCell()
         setDelegate()
         rootView.updateBookCount(searchResultData.bookCount)
@@ -37,10 +36,8 @@ final class SearchResultViewController: BaseUIViewController {
     
     // MARK: - Custom Method
     
-    private func setStyle() {
-        view.do {
-            $0.backgroundColor = .systemBackground
-        }
+    override func setUI() {
+        view.backgroundColor = .systemBackground
     }
     
     private func registerCell() {
@@ -50,8 +47,7 @@ final class SearchResultViewController: BaseUIViewController {
         )
     }
     
-    override func setUI() {
-    }
+
     
     override func setLayout() {
     }
@@ -70,6 +66,7 @@ final class SearchResultViewController: BaseUIViewController {
 }
 
 // MARK: - UICollectionViewDataSource
+
 extension SearchResultViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -91,6 +88,7 @@ extension SearchResultViewController: UICollectionViewDataSource {
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
+
 extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -117,6 +115,7 @@ extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
 }
 
 // MARK: - UICollectionViewDelegate
+
 extension SearchResultViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
