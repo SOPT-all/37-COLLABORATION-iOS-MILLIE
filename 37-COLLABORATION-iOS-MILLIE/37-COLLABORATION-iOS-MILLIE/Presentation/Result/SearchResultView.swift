@@ -41,10 +41,6 @@ final class SearchResultView: BaseUIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        setStyle()
-        setUI()
-        setLayout()
     }
     
     @available(*, unavailable)
@@ -54,8 +50,9 @@ final class SearchResultView: BaseUIView {
     
     // MARK: - SetUp Methods
     
-    func setStyle() {
-        
+
+    
+    override func setUI() {
         backgroundColor = .systemBackground
         
         navigationTitleLabel.do {
@@ -88,9 +85,7 @@ final class SearchResultView: BaseUIView {
         categoryTabs.do {
             $0.size = .small
         }
-    }
-    
-    override func setUI() {
+        
         addSubviews(
             navigationTitleLabel,
             navigationButton,

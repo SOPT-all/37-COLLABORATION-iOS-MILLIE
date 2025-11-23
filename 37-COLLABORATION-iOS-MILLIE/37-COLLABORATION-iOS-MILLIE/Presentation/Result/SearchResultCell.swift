@@ -10,7 +10,7 @@ import SnapKit
 import Then
 
 
-class SearchResultCell: UICollectionViewCell {
+final class SearchResultCell: UICollectionViewCell {
     
     // MARK: - UI Components
     
@@ -30,7 +30,6 @@ class SearchResultCell: UICollectionViewCell {
             $0.edges.equalToSuperview()
         }
         
-        setStyle()
         setUI()
         setLayout()
     }
@@ -41,7 +40,7 @@ class SearchResultCell: UICollectionViewCell {
     
     // MARK: - Setup
     
-    private func setStyle() {
+    private func setUI() {
                 
         contentView.do {
             $0.backgroundColor = .systemBackground
@@ -80,9 +79,7 @@ class SearchResultCell: UICollectionViewCell {
             $0.font = FontManager.body1.font
             $0.textColor = .grey2
         }
-    }
-    
-    private func setUI() {
+        
         contentView.addSubviews(
             bookImageView,
             bookTitleLabel,
