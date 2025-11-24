@@ -16,7 +16,7 @@ final class SearchHomeView: BaseUIView {
     
     private let headerView = SearchHomeHeaderView()
     
-    //TODO: - 검색바 넣기
+    private let millieSearchTextField = MillieSearchTextField()
     
     private let scrollView = UIScrollView()
     private let contentView = UIView()
@@ -25,7 +25,9 @@ final class SearchHomeView: BaseUIView {
     
     private let shortcutSection = ShortcutSectionView()
     
-    //TODO: - 카테고리... 바 넣기
+    let categoryTabs = MillieCategoryTabs().then {
+        $0.size = .big
+    }
     
     private let categoryLabel = UILabel().then {
         $0.text = "카테고리"
@@ -43,8 +45,10 @@ final class SearchHomeView: BaseUIView {
         scrollView.addSubview(contentView)
         
         contentView.addSubviews(
+            millieSearchTextField,
             realTimeRank,
             shortcutSection,
+            categoryTabs,
             categoryLabel,
             bookCategoryView
         )
@@ -70,8 +74,14 @@ final class SearchHomeView: BaseUIView {
             $0.width.equalTo(scrollView)
         }
         
+        millieSearchTextField.snp.makeConstraints {
+            $0.top.equalTo(contentView.snp.top).offset(8)
+            $0.leading.trailing.equalToSuperview().inset(18)
+            $0.height.equalTo(45)
+        }
+        
         realTimeRank.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(58)   //TODO: - 검색바 들어오면 수정
+            $0.top.equalTo(millieSearchTextField.snp.bottom).offset(8)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(48)
         }
@@ -82,8 +92,14 @@ final class SearchHomeView: BaseUIView {
             $0.height.equalTo(94)
         }
         
+        categoryTabs.snp.makeConstraints {
+            $0.top.equalTo(shortcutSection.snp.bottom).offset(29)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(45)
+        }
+        
         categoryLabel.snp.makeConstraints {
-            $0.top.equalTo(shortcutSection.snp.bottom).offset(22) //TODO: - 들어오면 수정
+            $0.top.equalTo(categoryTabs.snp.bottom).offset(17)
             $0.leading.trailing.equalToSuperview().inset(22)
             $0.height.equalTo(28)
         }
@@ -94,4 +110,8 @@ final class SearchHomeView: BaseUIView {
             $0.bottom.equalToSuperview().inset(24)
         }
     }
+}
+
+#Preview {
+    SearchHomeView()
 }
