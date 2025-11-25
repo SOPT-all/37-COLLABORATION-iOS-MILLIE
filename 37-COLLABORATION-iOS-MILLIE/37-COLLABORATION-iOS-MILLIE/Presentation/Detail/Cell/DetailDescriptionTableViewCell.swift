@@ -12,6 +12,8 @@ import Then
 
 class DetailDescriptionTableViewCell: UITableViewCell {
     
+    var reloadForNewHeight: (() -> Void)?
+    
     // MARK: - UI Components
     let titleLabel = UILabel()
     let descriptionLabel = UILabel()
@@ -78,6 +80,7 @@ class DetailDescriptionTableViewCell: UITableViewCell {
         sender.isEnabled = false
         sender.isHidden = true
         descriptionLabel.numberOfLines = 0
+        reloadForNewHeight?()
     }
     
     func configure(bookDetailModel: BookDetailModel) {

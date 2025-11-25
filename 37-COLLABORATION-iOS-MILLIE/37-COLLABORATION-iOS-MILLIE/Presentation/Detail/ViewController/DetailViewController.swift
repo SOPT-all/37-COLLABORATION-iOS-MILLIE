@@ -167,6 +167,10 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
                 return UITableViewCell()
             }
             cell.configure(bookDetailModel: bookDetailModel)
+            cell.reloadForNewHeight = {
+                // reloadRows로 실행하면 첫번째 터치 때 업데이트 안되는 버그가 있음 (이유는 모르겠음)
+                tableView.reloadData()
+            }
             return cell
         case .review:
             // TODO: - 나연님
