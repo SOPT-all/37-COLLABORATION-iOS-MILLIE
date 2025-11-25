@@ -29,7 +29,6 @@ final class SearchResultViewController: BaseUIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         registerCell()
-        setDelegate()
         rootView.updateBookCount(searchResultData.bookCount)
         rootView.categoryTabs.setInitialIndicatorPosition()
     }
@@ -47,16 +46,6 @@ final class SearchResultViewController: BaseUIViewController {
         )
     }
     
-
-    
-    override func setLayout() {
-    }
-    
-    // MARK: - Action Method
-    
-    override func addTarget() {
-    }
-    
     // MARK: - Delegate Method
     
     override func setDelegate() {
@@ -64,7 +53,7 @@ final class SearchResultViewController: BaseUIViewController {
         rootView.collectionView.dataSource = self
     }
 }
-
+    
 // MARK: - UICollectionViewDataSource
 
 extension SearchResultViewController: UICollectionViewDataSource {
@@ -121,8 +110,4 @@ extension SearchResultViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedBook = searchResultData.books[indexPath.item]
     }
-}
-
-#Preview {
-    SearchResultViewController()
 }
