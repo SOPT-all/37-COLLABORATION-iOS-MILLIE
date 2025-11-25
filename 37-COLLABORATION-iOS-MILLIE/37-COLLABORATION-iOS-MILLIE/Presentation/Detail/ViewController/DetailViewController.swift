@@ -60,6 +60,7 @@ class DetailViewController: BaseUIViewController {
         $0.register(DetailDescriptionTableViewCell.self, forCellReuseIdentifier: DetailDescriptionTableViewCell.identifier)
         $0.register(DetailReadingDataTableViewCell.self, forCellReuseIdentifier: DetailReadingDataTableViewCell.identifier)
         $0.register(DetailRelatedBookTableViewCell.self, forCellReuseIdentifier: DetailRelatedBookTableViewCell.identifier)
+        $0.register(DetailReviewTableViewCell.self, forCellReuseIdentifier: DetailReviewTableViewCell.identifier)
     }
     
     let detailBottomBarView = DetailBottomBarView()
@@ -173,8 +174,11 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
             }
             return cell
         case .review:
-            // TODO: - 나연님
-            return UITableViewCell()
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailReviewTableViewCell.identifier, for: indexPath) as? DetailReviewTableViewCell else {
+                return UITableViewCell()
+            }
+            cell.reviewView.bind(bookDetailModel.reviews)
+            return cell
         case .readingData:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailReadingDataTableViewCell.identifier, for: indexPath) as? DetailReadingDataTableViewCell else {
                 return UITableViewCell()

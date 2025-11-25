@@ -89,7 +89,7 @@ final class ReviewCell: UICollectionViewCell {
         }
         
         reviewLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview()
             $0.top.equalTo(dateLabel.snp.bottom).offset(10)
         }
         
@@ -101,9 +101,10 @@ final class ReviewCell: UICollectionViewCell {
 }
 
 extension ReviewCell {
-    func dataBind(data: ReviewData) {
-        nameLabel.text = data.name
-        dateLabel.text = data.date
-        reviewLabel.text = data.review
+    func dataBind(data: BookDetailModel.ReviewModel) {
+        nameLabel.text = data.reviewerName
+        dateLabel.text = data.createdDate
+        reviewLabel.text = data.reviewContent
+        likeButton.setLikeCount(data.likeCount)
     }
 }
