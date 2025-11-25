@@ -138,7 +138,3 @@ final class SearchResultCell: UICollectionViewCell {
         bookImageView.contentMode = .scaleAspectFill
     }
 }
-
-#Preview {
-    SearchResultCell()
-}

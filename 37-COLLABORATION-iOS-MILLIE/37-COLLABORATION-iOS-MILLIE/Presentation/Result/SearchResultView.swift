@@ -50,8 +50,6 @@ final class SearchResultView: BaseUIView {
     
     // MARK: - SetUp Methods
     
-
-    
     override func setUI() {
         backgroundColor = .systemBackground
         
@@ -170,8 +168,4 @@ final class SearchResultView: BaseUIView {
     func updateBookCount(_ count: Int) {
         totalBookCountLabel.text = "\(count)"
     }
-}
-
-#Preview {
-    SearchResultView()
 }
