@@ -100,6 +100,11 @@ public final class LikeButton: UIButton {
         let tap = UITapGestureRecognizer(target: self, action: #selector(isLikeButtonTapped))
         container.addGestureRecognizer(tap)
     }
+    
+    func setLikeCount(_ count: Int) {
+        likeCount = count
+        countLabel.text = "\(count)"
+    }
 }
 
 extension LikeButton {
