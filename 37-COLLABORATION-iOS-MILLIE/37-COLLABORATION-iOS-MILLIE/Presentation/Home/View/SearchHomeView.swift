@@ -111,7 +111,3 @@ final class SearchHomeView: BaseUIView {
         }
     }
 }
-
-#Preview {
-    SearchHomeView()
-}
