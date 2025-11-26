@@ -21,7 +21,7 @@ class DetailReadingDataTableViewCell: UITableViewCell {
         layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         return UICollectionView(frame: .zero, collectionViewLayout: layout)
     }()
-    let dataImageView = UIImageView()
+    let dataImageButton = UIButton()
     
     // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -38,7 +38,7 @@ class DetailReadingDataTableViewCell: UITableViewCell {
     // MARK: - SetUI
     private func setUI() {
         backgroundColor = .background
-        contentView.addSubviews(titleLabel, tabCollectionView, dataImageView)
+        contentView.addSubviews(titleLabel, tabCollectionView, dataImageButton)
         titleLabel.do {
             $0.text = "이 책의 독서 데이터"
             $0.textColor = .black
@@ -54,9 +54,12 @@ class DetailReadingDataTableViewCell: UITableViewCell {
             $0.delegate = self
             $0.dataSource = self
         }
-        dataImageView.do {
-            $0.image = ReadingDataType.completeRate.data
-            $0.contentMode = .scaleAspectFit
+        dataImageButton.do {
+            $0.isSelected = false
+            $0.imageView?.contentMode = .scaleAspectFit
+            $0.setImage(ReadingDataType.completeRate.dataImages.0, for: .normal)
+            $0.setImage(ReadingDataType.completeRate.dataImages.1, for: .selected)
+            $0.addTarget(self, action: #selector(touchUpInsideDataButton), for: .touchUpInside)
         }
         tabCollectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: false, scrollPosition: [])
     }
@@ -72,12 +75,18 @@ class DetailReadingDataTableViewCell: UITableViewCell {
             $0.horizontalEdges.equalToSuperview()
             $0.height.equalTo(58)
         }
-        dataImageView.snp.makeConstraints {
+        dataImageButton.snp.makeConstraints {
             $0.top.equalTo(tabCollectionView.snp.bottom)
             $0.horizontalEdges.equalToSuperview().inset(16)
             $0.bottom.equalToSuperview().inset(30)
             $0.height.equalTo(394)
         }
+    }
+}
+
+extension DetailReadingDataTableViewCell {
+    @objc func touchUpInsideDataButton(_ sender: UIButton) {
+        sender.isSelected.toggle()
     }
 }
 
@@ -96,12 +105,12 @@ extension DetailReadingDataTableViewCell: UICollectionViewDelegate, UICollection
             }
         }
         
-        var data: UIImage {
+        var dataImages: (UIImage, UIImage) {
             switch self {
             case .completeRate:
-                return .milePickDetail
+                return (.milePick, .milePickDetail)
             case .popularity:
-                return .ageGroupStats
+                return (.ageGroupStats, .ageGroupStats)
             }
         }
     }
@@ -119,6 +128,9 @@ extension DetailReadingDataTableViewCell: UICollectionViewDelegate, UICollection
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        dataImageView.image = ReadingDataType(rawValue: indexPath.item)?.data
+        guard let readingDataType = ReadingDataType(rawValue: indexPath.item) else { return }
+        dataImageButton.isSelected = false
+        dataImageButton.setImage(readingDataType.dataImages.0, for: .normal)
+        dataImageButton.setImage(readingDataType.dataImages.1, for: .selected)
     }
 }
