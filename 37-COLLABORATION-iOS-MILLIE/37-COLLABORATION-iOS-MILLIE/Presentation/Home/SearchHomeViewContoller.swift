@@ -19,6 +19,7 @@ final class SearchHomeViewController: BaseUIViewController {
         super.viewDidLoad()
         setDelegate()
         fetchCategories()
+        homeView.categoryTabs.setInitialIndicatorPosition()
     }
     
      override func setDelegate() {
