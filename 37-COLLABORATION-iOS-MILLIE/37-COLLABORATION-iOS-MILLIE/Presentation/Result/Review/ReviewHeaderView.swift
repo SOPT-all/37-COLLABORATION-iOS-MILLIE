@@ -46,4 +46,8 @@ final class ReviewHeaderView: BaseUIView {
             $0.size.equalTo(24)
         }
     }
+    
+    func setReviewCount(count: Int) {
+        titleLabel.attributedText = "리뷰 \(count)".changeTextColor(parts: [("리뷰", .greyBlack), ("\(count)", .milliePurple)])
+    }
 }
