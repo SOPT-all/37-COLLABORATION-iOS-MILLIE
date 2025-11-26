@@ -16,7 +16,7 @@ final class MillieTabBar: UITabBarController {
     }
 
     func setTabBar() {
-        let vc1 = UINavigationController(rootViewController: ViewController())
+        let vc1 = UINavigationController(rootViewController: SearchResultViewController())
         vc1.tabBarItem = UITabBarItem(title: "투데이", image: .navToday, tag: 1)
         let vc2 = UINavigationController(rootViewController: ViewController2())
         vc2.tabBarItem = UITabBarItem(title: "완독지수", image: .navWandok, tag: 2)
