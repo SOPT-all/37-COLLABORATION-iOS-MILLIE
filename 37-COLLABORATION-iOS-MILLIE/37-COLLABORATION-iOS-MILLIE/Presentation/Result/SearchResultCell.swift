@@ -103,6 +103,7 @@ final class SearchResultCell: UICollectionViewCell {
         bookTitleLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(5.5)
             $0.top.equalTo(bookImageView.snp.bottom).offset(10)
+            $0.width.equalTo(bookImageView)
         }
         
         bookAuthorLabel.snp.makeConstraints {
