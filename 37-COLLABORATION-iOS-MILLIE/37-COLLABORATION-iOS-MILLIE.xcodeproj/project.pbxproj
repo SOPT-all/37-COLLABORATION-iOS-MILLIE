@@ -9,13 +9,13 @@
 /* Begin PBXBuildFile section */
 		3344185E2EC973A7004CEA66 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 3344185D2EC973A7004CEA66 /* Then */; };
 		334418612EC973B3004CEA66 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 334418602EC973B3004CEA66 /* SnapKit */; };
-		CA8D83D72ED88AAE006C3963 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CA8D83372ED88AAE006C3963 /* Config.xcconfig */; };
-		CAD47D392ED8401C0079A197 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = CAD47D382ED8401C0079A197 /* Kingfisher */; };
+		96EC98612ED82C26001AB216 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 96EC98602ED82C26001AB216 /* Kingfisher */; };
+		529FC1E92ED74FE200564FAC /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 529FC1E82ED74FE200564FAC /* Config.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		334418432EC972D4004CEA66 /* 37-COLLABORATION-iOS-MILLIE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "37-COLLABORATION-iOS-MILLIE.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CA8D83372ED88AAE006C3963 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		529FC1E82ED74FE200564FAC /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -44,7 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CAD47D392ED8401C0079A197 /* Kingfisher in Frameworks */,
+				96EC98612ED82C26001AB216 /* Kingfisher in Frameworks */,
 				3344185E2EC973A7004CEA66 /* Then in Frameworks */,
 				334418612EC973B3004CEA66 /* SnapKit in Frameworks */,
 			);
@@ -56,7 +56,7 @@
 		3344183A2EC972D4004CEA66 = {
 			isa = PBXGroup;
 			children = (
-				CA8D83372ED88AAE006C3963 /* Config.xcconfig */,
+				529FC1E82ED74FE200564FAC /* Config.xcconfig */,
 				334418452EC972D4004CEA66 /* 37-COLLABORATION-iOS-MILLIE */,
 				334418442EC972D4004CEA66 /* Products */,
 			);
@@ -92,7 +92,7 @@
 			packageProductDependencies = (
 				3344185D2EC973A7004CEA66 /* Then */,
 				334418602EC973B3004CEA66 /* SnapKit */,
-				CAD47D382ED8401C0079A197 /* Kingfisher */,
+				96EC98602ED82C26001AB216 /* Kingfisher */,
 			);
 			productName = "37-COLLABORATION-iOS-MILLIE";
 			productReference = 334418432EC972D4004CEA66 /* 37-COLLABORATION-iOS-MILLIE.app */;
@@ -125,7 +125,7 @@
 			packageReferences = (
 				3344185C2EC973A7004CEA66 /* XCRemoteSwiftPackageReference "Then" */,
 				3344185F2EC973B3004CEA66 /* XCRemoteSwiftPackageReference "SnapKit" */,
-				CAD47D372ED8401C0079A197 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				96EC985F2ED82C26001AB216 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 334418442EC972D4004CEA66 /* Products */;
@@ -142,7 +142,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CA8D83D72ED88AAE006C3963 /* Config.xcconfig in Resources */,
+				529FC1E92ED74FE200564FAC /* Config.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -161,7 +161,7 @@
 /* Begin XCBuildConfiguration section */
 		334418572EC972D7004CEA66 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CA8D83372ED88AAE006C3963 /* Config.xcconfig */;
+			baseConfigurationReference = 529FC1E82ED74FE200564FAC /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -215,10 +215,11 @@
 		};
 		334418592EC972D7004CEA66 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CA8D83372ED88AAE006C3963 /* Config.xcconfig */;
+			baseConfigurationReference = 529FC1E82ED74FE200564FAC /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BASE_URL = "$(BASE_URL)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -283,6 +284,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BASE_URL = "$(BASE_URL)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -374,9 +376,9 @@
 				minimumVersion = 5.7.1;
 			};
 		};
-		CAD47D372ED8401C0079A197 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+		96EC985F2ED82C26001AB216 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/onevcat/Kingfisher#installation";
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 8.6.2;
@@ -395,9 +397,9 @@
 			package = 3344185F2EC973B3004CEA66 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
 		};
-		CAD47D382ED8401C0079A197 /* Kingfisher */ = {
+		96EC98602ED82C26001AB216 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CAD47D372ED8401C0079A197 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			package = 96EC985F2ED82C26001AB216 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */

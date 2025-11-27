@@ -26,7 +26,7 @@ final class BookCategoryCell: UICollectionViewCell {
     }
     
     private let bookImageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFill
+        $0.contentMode = .scaleAspectFit
         $0.clipsToBounds = true
     }
     
@@ -86,13 +86,12 @@ final class BookCategoryCell: UICollectionViewCell {
     
     // MARK: - Configure
     
-    func configure(
-        title: String,
-        description: String,
-        image: UIImage?,
-    ) {
+    func configure(title: String, description: String) {
         titleLabel.text = title
         descriptionLabel.text = description
+    }
+
+    func setImage(_ image: UIImage) {
         bookImageView.image = image
     }
 }
