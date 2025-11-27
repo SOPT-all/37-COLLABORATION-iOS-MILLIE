@@ -13,13 +13,9 @@ struct CategoryListData: Decodable {
     let categoryId: Int
     let title: String
     let description: String
-    let imageUrl: String   
-
-    enum CodingKeys: String, CodingKey {
-        case categoryId, title, description
-        case imageUrl = "imageUrl"
-    }
+    let imageUrl: String
 }
+
 
 // DTO → Domain 변환
 extension CategoryListData {
