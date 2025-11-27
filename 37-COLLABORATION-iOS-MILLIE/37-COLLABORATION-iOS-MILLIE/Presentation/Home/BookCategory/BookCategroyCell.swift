@@ -26,7 +26,7 @@ final class BookCategoryCell: UICollectionViewCell {
     }
     
     private let bookImageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFill
+        $0.contentMode = .scaleAspectFit
         $0.clipsToBounds = true
     }
     
