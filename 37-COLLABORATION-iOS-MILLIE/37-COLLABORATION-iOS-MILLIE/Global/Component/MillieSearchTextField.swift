@@ -101,4 +101,13 @@ extension MillieSearchTextField {
         clearButton.isHidden = true
         scanButton.isHidden = false
     }
+    
+    var text: String? {
+        get { textField.text }
+        set { textField.text = newValue }
+    }
+    
+    var internalTextField: UITextField {
+        return textField
+    }
 }

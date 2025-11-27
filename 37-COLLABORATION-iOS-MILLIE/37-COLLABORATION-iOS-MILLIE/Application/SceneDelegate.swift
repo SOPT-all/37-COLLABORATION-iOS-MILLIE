@@ -22,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        let vc = UINavigationController(rootViewController: ViewController())
         // 4.
 //        window.rootViewController = MillieTabBar()
-        window.rootViewController = DetailViewController ()
+        window.rootViewController = MillieTabBar()
         // 5.
         self.window = window
         // 6.
