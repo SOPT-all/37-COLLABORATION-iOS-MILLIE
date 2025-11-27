@@ -14,6 +14,8 @@ final class SearchResultViewController: BaseUIViewController {
     
     // MARK: - Properties
     
+    private var categoryTabIndex: Int = 0
+    
     private var searchResultData: SearchResultData = SearchResultData(
         keyword: "",
         bookCount: 0,
@@ -48,6 +50,10 @@ final class SearchResultViewController: BaseUIViewController {
             SearchResultCell.self,
             forCellWithReuseIdentifier: SearchResultCell.identifier
         )
+        rootView.collectionView.register(
+            LibraryCollectionViewCell.self,
+            forCellWithReuseIdentifier: LibraryCollectionViewCell.identifier
+        )
     }
     
     // MARK: - Delegate Method
@@ -56,6 +62,7 @@ final class SearchResultViewController: BaseUIViewController {
         rootView.collectionView.delegate = self
         rootView.collectionView.dataSource = self
         rootView.getTextField().internalTextField.delegate = self
+        rootView.categoryTabs.delegate = self
     }
 }
     
@@ -68,43 +75,29 @@ extension SearchResultViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: SearchResultCell.identifier,
-            for: indexPath
-        ) as? SearchResultCell else {
+        switch categoryTabIndex {
+        case 0:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: SearchResultCell.identifier,
+                for: indexPath
+            ) as? SearchResultCell else {
+                return UICollectionViewCell()
+            }
+            
+            let book = searchResultData.books[indexPath.item]
+            cell.configure(with: book)
+            return cell
+        case 3:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: LibraryCollectionViewCell.identifier,
+                for: indexPath
+            ) as? LibraryCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            return cell
+        default:
             return UICollectionViewCell()
         }
-        
-        let book = searchResultData.books[indexPath.item]
-        cell.configure(with: book)
-        return cell
-    }
-}
-
-// MARK: - UICollectionViewDelegateFlowLayout
-
-extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cellWidth: CGFloat = 103
-        let cellHeight: CGFloat = 180
-        
-        return CGSize(width: cellWidth, height: cellHeight)
-    }
-    
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        let totalWidth = collectionView.bounds.width
-        let sectionInset: CGFloat = 21
-        let cellWidth: CGFloat = 103
-        let numberOfCells: CGFloat = 3
-        
-        let availableWidth = totalWidth - (sectionInset * 2)
-        let totalCellWidth = cellWidth * numberOfCells
-        let totalSpacing = availableWidth - totalCellWidth
-        let numberOfGaps = numberOfCells - 1
-        
-        return max(0, totalSpacing / numberOfGaps)
     }
 }
 
@@ -133,6 +126,15 @@ extension SearchResultViewController: UITextFieldDelegate {
         }
         
         return true
+    }
+}
+
+// MARK: - MillieCategoryTabsDelegate
+extension SearchResultViewController: MillieCategoryTabsDelegate {
+    func didMillieCategoryTabsTab(index: Int) {
+        categoryTabIndex = index
+        rootView.updateTitle(MillieCategoryTabs.CategoryTabsConfigure.small.titles[index])
+        rootView.collectionView.reloadData()
     }
 }
 
