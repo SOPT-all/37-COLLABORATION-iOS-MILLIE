@@ -57,6 +57,7 @@ class DetailReadingDataTableViewCell: UITableViewCell {
         dataImageButton.do {
             $0.isSelected = false
             $0.imageView?.contentMode = .scaleAspectFit
+            $0.adjustsImageWhenHighlighted = false
             $0.setImage(ReadingDataType.completeRate.dataImages.0, for: .normal)
             $0.setImage(ReadingDataType.completeRate.dataImages.1, for: .selected)
             $0.addTarget(self, action: #selector(touchUpInsideDataButton), for: .touchUpInside)
