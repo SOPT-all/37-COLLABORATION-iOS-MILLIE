@@ -57,4 +57,9 @@ class LibraryCollectionViewCell: UICollectionViewCell {
             $0.horizontalEdges.equalToSuperview()
         }
     }
+    
+    func configure(image: UIImage, name: String) {
+        mainImageView.image = image
+        titleLabel.text = name
+    }
 }

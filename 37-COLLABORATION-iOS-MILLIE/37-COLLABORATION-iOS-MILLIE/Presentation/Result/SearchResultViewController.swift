@@ -23,6 +23,13 @@ final class SearchResultViewController: BaseUIViewController {
         banner: nil
     )
     
+    private var libraryMockData: [(image: UIImage, name: String)] = [
+        (.libraryProfile1, "홍학의 자리 서재"),
+        (.libraryProfile2, "홍학의 자리 에반하다 서재"),
+        (.libraryProfile1, "홍학의 자리 에반하다 서재"),
+        (.libraryProfile3, "홍학의 자리 서재"),
+    ]
+    
     // MARK: - UI Components
     
     private let rootView = SearchResultView()
@@ -71,7 +78,14 @@ final class SearchResultViewController: BaseUIViewController {
 extension SearchResultViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return searchResultData.books.count
+        switch categoryTabIndex {
+        case 0:
+            return searchResultData.books.count
+        case 3:
+            return libraryMockData.count
+        default:
+            return 0
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -94,6 +108,7 @@ extension SearchResultViewController: UICollectionViewDataSource {
             ) as? LibraryCollectionViewCell else {
                 return UICollectionViewCell()
             }
+            cell.configure(image: libraryMockData[indexPath.item].image, name: libraryMockData[indexPath.item].name)
             return cell
         default:
             return UICollectionViewCell()
@@ -134,6 +149,7 @@ extension SearchResultViewController: MillieCategoryTabsDelegate {
     func didMillieCategoryTabsTab(index: Int) {
         categoryTabIndex = index
         rootView.updateTitle(MillieCategoryTabs.CategoryTabsConfigure.small.titles[index])
+        rootView.updateBookCount(libraryMockData.count)
         rootView.collectionView.reloadData()
     }
 }
