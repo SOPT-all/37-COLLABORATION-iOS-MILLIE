@@ -14,6 +14,13 @@
 		<string>NotoSansKR-Bold.ttf</string>
 		<string>NotoSansKR-Regular.ttf</string>
 	</array>
+	<key>CFBundleIdentifier</key>
+	<string></string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
