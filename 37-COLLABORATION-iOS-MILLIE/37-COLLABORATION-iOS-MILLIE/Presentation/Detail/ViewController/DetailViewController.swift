@@ -12,7 +12,7 @@ import SnapKit
 class DetailViewController: BaseUIViewController {
     
     // MARK: - Properties
-    let bookDetailModel: BookDetailModel = BookDetailModel(
+    var bookDetailModel: BookDetailModel = BookDetailModel(
         bookId: 1,
         bookCoverImageUrl: URL(string: "naver.com")!,
         bookTitle: "홍학의 자리",
@@ -189,6 +189,40 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
                 return UITableViewCell()
             }
             return cell
+        }
+    }
+}
+
+// MARK: - Network
+
+extension DetailViewController {
+    @objc func handleReviewLike(_ sender: Any?) {
+        guard let cell = sender as? ReviewCell,
+              let reviewId = cell.reviewId else { return }
+        
+        print("좋아요 클릭한 리뷰 id: \(reviewId)")
+        
+        Task { [weak self] in
+            await self?.toggleReviewLike(reviewId: reviewId, cell: cell)
+        }
+    }
+    
+    func toggleReviewLike(reviewId: Int, cell: ReviewCell) async {
+        let result = await NetworkService.shared.detailService.toggleReviewLike(reviewId: reviewId)
+        
+        switch result {
+        case .success(let data):
+            guard let dto = data.data else { return }
+            if let index = bookDetailModel.reviews.firstIndex(where: { $0.reviewId == reviewId }) {
+                bookDetailModel.reviews[index].liked = dto.liked
+                bookDetailModel.reviews[index].likeCount = dto.likeCount
+            }
+            DispatchQueue.main.async {
+                cell.updateLikeUI(liked: dto.liked, count: dto.likeCount)
+            }
+            
+        case .failure(let error):
+            print("❌ 리뷰 좋아요 실패: \(error)")
         }
     }
 }
