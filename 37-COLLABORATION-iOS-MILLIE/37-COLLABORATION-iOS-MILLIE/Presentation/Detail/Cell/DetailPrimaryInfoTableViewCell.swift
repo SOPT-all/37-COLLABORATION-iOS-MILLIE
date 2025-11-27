@@ -7,10 +7,13 @@
 
 import UIKit
 
+import Kingfisher
 import SnapKit
 import Then
 
 class DetailPrimaryInfoTableViewCell: UITableViewCell {
+    
+    var updateBackgroundColor: ((UIColor?) -> Void)?
     
     // MARK: - UI Components
     let bookImageView = UIImageView()
@@ -148,13 +151,16 @@ class DetailPrimaryInfoTableViewCell: UITableViewCell {
         }
     }
     
-    func configure(bookDetailModel: BookDetailModel) {
-        // TODO: - TEMP 나중에 URL로 바꿀 것!
-        bookImageView.image = .imgDetailMain
-        bookTitleLabel.text = bookDetailModel.bookTitle
-        bookSubtitleLabel.text = "\(bookDetailModel.bookAuthor) \(bookDetailModel.bookType) · \(bookDetailModel.publishedDate)"
-        bookReviewStatView.configure(bookStatType: .reviewCount(bookDetailModel.totalReviewCount))
-        bookRateStatView.configure(bookStatType: .rate(bookDetailModel.bookRate))
-        bookCompleteRateStatView.configure(bookStatType: .completeRate(bookDetailModel.completionRate))
+    func configure(bookDetailInfoData: BookDetailInfoData) {
+        bookImageView.kf.setImage(with: bookDetailInfoData.bookCoverImageUrl) { [weak self] result in
+            if case let .success(image) = result {
+                self?.updateBackgroundColor?(image.image.averageColor)
+            }
+        }
+        bookTitleLabel.text = bookDetailInfoData.bookTitle
+        bookSubtitleLabel.text = "\(bookDetailInfoData.bookAuthor) \(bookDetailInfoData.bookType) · \(bookDetailInfoData.publishedDate)"
+        bookReviewStatView.configure(bookStatType: .reviewCount(bookDetailInfoData.totalReviewCount))
+        bookRateStatView.configure(bookStatType: .rate(bookDetailInfoData.bookRate))
+        bookCompleteRateStatView.configure(bookStatType: .completeRate(bookDetailInfoData.completionRate))
     }
 }
