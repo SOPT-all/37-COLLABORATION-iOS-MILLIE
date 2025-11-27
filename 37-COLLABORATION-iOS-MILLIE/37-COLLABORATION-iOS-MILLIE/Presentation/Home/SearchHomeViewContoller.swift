@@ -95,8 +95,8 @@ extension SearchHomeViewController: UICollectionViewDataSource {
         }
         
         let item = categories[indexPath.item]
-        
-        cell.configure(title: item.title, description: item.description)
+        let isRecent = indexPath.item == 0
+        cell.configure(with: item, isRecent: isRecent)
         
         if let url = URL(string: item.imageURL) {
             URLSession.shared.dataTask(with: url) { data, _, _ in
