@@ -115,7 +115,7 @@ class DetailPrimaryInfoTableViewCell: UITableViewCell {
         bookImageView.snp.makeConstraints {
             $0.width.equalTo(193)
             $0.height.equalTo(280)
-            $0.top.equalToSuperview().inset(133)
+            $0.top.equalToSuperview().inset(47)
             $0.centerX.equalToSuperview()
         }
         bookShadow1View.snp.makeConstraints {
