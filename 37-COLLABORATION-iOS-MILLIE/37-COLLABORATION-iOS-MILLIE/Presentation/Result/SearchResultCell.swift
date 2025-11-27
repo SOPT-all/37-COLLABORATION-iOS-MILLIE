@@ -8,6 +8,7 @@ import UIKit
 
 import SnapKit
 import Then
+import Kingfisher
 
 
 final class SearchResultCell: UICollectionViewCell {
@@ -134,7 +135,19 @@ final class SearchResultCell: UICollectionViewCell {
         readingProgressLabel.text = "\(book.completionRate)%"
         totalReadingTimeLabel.text = "| \(book.completionTime)분"
         
-        bookImageView.image = UIImage(named: "Img_result_book1")
+        if let url = URL(string: book.bookCoverImageUrl) {
+            bookImageView.kf.setImage(
+                with: url,
+                placeholder: UIImage(named: "Img_result_book1"),
+                options: [
+                    .transition(.fade(0.2)),
+                    .cacheOriginalImage
+                ]
+            )
+        } else {
+            print("이미지 URL 오류 - bookId: \(book.bookId), URL: \(book.bookCoverImageUrl)")
+        }
+        
         bookImageView.contentMode = .scaleAspectFill
     }
 }

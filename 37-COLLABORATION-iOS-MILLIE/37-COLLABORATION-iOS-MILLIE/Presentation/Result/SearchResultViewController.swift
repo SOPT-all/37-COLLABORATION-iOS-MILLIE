@@ -14,7 +14,12 @@ final class SearchResultViewController: BaseUIViewController {
     
     // MARK: - Properties
     
-    private var searchResultData: SearchResultData = SearchResultResponse.mockData.data
+    private var searchResultData: SearchResultData = SearchResultData(
+        keyword: "",
+        bookCount: 0,
+        books: [],
+        banner: nil
+    )
     
     // MARK: - UI Components
     
@@ -29,7 +34,6 @@ final class SearchResultViewController: BaseUIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         registerCell()
-        rootView.updateBookCount(searchResultData.bookCount)
         rootView.categoryTabs.setInitialIndicatorPosition()
     }
     
@@ -51,6 +55,7 @@ final class SearchResultViewController: BaseUIViewController {
     override func setDelegate() {
         rootView.collectionView.delegate = self
         rootView.collectionView.dataSource = self
+        rootView.getTextField().internalTextField.delegate = self
     }
 }
     
@@ -109,5 +114,57 @@ extension SearchResultViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedBook = searchResultData.books[indexPath.item]
+    }
+}
+
+// MARK: - UITextFieldDelegate
+
+extension SearchResultViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        
+        guard let keyword = textField.text, !keyword.isEmpty else {
+            print("검색어가 비어있습니다")
+            return true
+        }
+        
+        Task {
+            await searchBooks(keyword: keyword)
+        }
+        
+        return true
+    }
+}
+
+// MARK: - Network
+
+extension SearchResultViewController {
+    func searchBooks(keyword: String) async {
+        let result = await NetworkService.shared.searchService.searchBooks(keyword: keyword)
+        
+        switch result {
+        case .success(let response):
+            guard let data = response.data else { return }
+            
+            let books = data.books.map { $0.toDomain() }
+            let banner = data.banner?.toDomain()
+            
+            searchResultData = SearchResultData(
+                keyword: data.keyword,
+                bookCount: data.bookCount,
+                books: books,
+                banner: banner
+            )
+            
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.rootView.updateBookCount(self.searchResultData.bookCount)
+                self.rootView.updateBanner(self.searchResultData.banner)
+                self.rootView.collectionView.reloadData()
+            }
+            
+        case .failure(let error):
+            print("도서 검색 실패: \(error)")
+        }
     }
 }

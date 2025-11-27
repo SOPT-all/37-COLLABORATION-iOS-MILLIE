@@ -9,6 +9,7 @@ import UIKit
 
 import SnapKit
 import Then
+import Kingfisher
 
 final class SearchResultView: BaseUIView {
     
@@ -19,7 +20,12 @@ final class SearchResultView: BaseUIView {
     private let titleLabel = UILabel()
     private let totalBookCountLabel = UILabel()
     private let textField = MillieSearchTextField()
-    private let adBannerImageView = UIImageView()
+    
+    private let bannerContainerView = UIView()
+    private let bannerTitleLabel = UILabel()
+    private let bannerContentLabel = UILabel()
+    private let bannerImageView = UIImageView()
+    
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     
@@ -69,13 +75,29 @@ final class SearchResultView: BaseUIView {
         }
         
         totalBookCountLabel.do {
-            $0.text = "0"  // 임시값입니다 후에 업데이트됨
+            $0.text = "0"
             $0.font = FontManager.body1.font
             $0.textColor = UIColor(named: "millie_Purple")
         }
         
-        adBannerImageView.do {
-            $0.image = UIImage(named: "ad_banner")
+        bannerContainerView.do {
+            $0.layer.cornerRadius = 8
+            $0.clipsToBounds = true
+        }
+        
+        bannerTitleLabel.do {
+            $0.font = FontManager.subhead4.font
+            $0.textColor = .grey4
+            $0.numberOfLines = 1
+        }
+        
+        bannerContentLabel.do {
+            $0.font = FontManager.body1.font
+            $0.textColor = .grey3
+            $0.numberOfLines = 1
+        }
+        
+        bannerImageView.do {
             $0.contentMode = .scaleAspectFill
             $0.clipsToBounds = true
         }
@@ -90,7 +112,13 @@ final class SearchResultView: BaseUIView {
             textField,
             categoryTabs,
             scrollView,
-            adBannerImageView
+            bannerContainerView
+        )
+        
+        bannerContainerView.addSubviews(
+            bannerTitleLabel,
+            bannerContentLabel,
+            bannerImageView
         )
         
         scrollView.addSubview(contentView)
@@ -130,7 +158,7 @@ final class SearchResultView: BaseUIView {
         scrollView.snp.makeConstraints {
             $0.top.equalTo(categoryTabs.snp.bottom)
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(adBannerImageView.snp.top)
+            $0.bottom.equalTo(bannerContainerView.snp.top)
         }
         
         contentView.snp.makeConstraints {
@@ -155,11 +183,32 @@ final class SearchResultView: BaseUIView {
             $0.height.equalTo(800) 
         }
         
-        adBannerImageView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(23)
+        bannerContainerView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
             $0.bottom.equalToSuperview().inset(109)
-            $0.height.equalTo(84)
             $0.width.equalTo(329)
+            $0.height.equalTo(84)
+        }
+        
+        bannerTitleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(21)
+            $0.leading.equalToSuperview().offset(20)
+            $0.width.equalTo(206)
+            $0.height.equalTo(18)
+        }
+        
+        bannerContentLabel.snp.makeConstraints {
+            $0.top.equalTo(bannerTitleLabel.snp.bottom).offset(6)
+            $0.leading.equalToSuperview().offset(27)
+            $0.width.equalTo(206)
+            $0.height.equalTo(16)
+        }
+        
+        bannerImageView.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(26)
+            $0.bottom.equalToSuperview()
+            $0.width.equalTo(60)
+            $0.height.equalTo(60)
         }
     }
     
@@ -167,5 +216,38 @@ final class SearchResultView: BaseUIView {
     
     func updateBookCount(_ count: Int) {
         totalBookCountLabel.text = "\(count)"
+    }
+    
+    func getTextField() -> MillieSearchTextField {
+        return textField
+    }
+    
+    func getSearchText() -> String? {
+        return textField.text
+    }
+    
+    func updateBanner(_ banner: Banner?) {
+        guard let banner = banner else {
+            bannerContainerView.isHidden = true
+            bannerContainerView.backgroundColor = .clear
+            return
+        }
+        
+        bannerContainerView.isHidden = false
+        bannerContainerView.backgroundColor = UIColor(named: "banner_mint")
+        bannerTitleLabel.text = banner.bannerTitle
+        bannerContentLabel.text = banner.bannerContent
+        
+        if let url = URL(string: banner.bannerImageUrl) {
+            bannerImageView.kf.setImage(
+                with: url,
+                options: [
+                    .transition(.fade(0.2)),
+                    .cacheOriginalImage
+                ]
+            )
+        } else {
+            print("배너 이미지 URL 오류 - bannerId: \(banner.bannerId), URL: \(banner.bannerImageUrl)")
+        }
     }
 }
