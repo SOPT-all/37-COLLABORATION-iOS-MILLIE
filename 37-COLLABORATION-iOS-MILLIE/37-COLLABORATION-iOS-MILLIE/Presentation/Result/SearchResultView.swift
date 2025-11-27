@@ -35,6 +35,7 @@ final class SearchResultView: BaseUIView {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = 10
+        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         layout.sectionInset = UIEdgeInsets(top: 16, left: 21, bottom: 16, right: 21)
 
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -285,6 +286,10 @@ final class SearchResultView: BaseUIView {
     }
     
     // MARK: - Public Methods
+    
+    func updateTitle(_ title: String) {
+        titleLabel.text = title
+    }
     
     func updateBookCount(_ count: Int) {
         totalBookCountLabel.text = "\(count)"

@@ -14,6 +14,8 @@ final class SearchResultViewController: BaseUIViewController {
     
     // MARK: - Properties
     
+    private var categoryTabIndex: Int = 0
+    
     private var searchResultData: SearchResultData = SearchResultData(
         keyword: "",
         bookCount: 0,
@@ -66,6 +68,7 @@ final class SearchResultViewController: BaseUIViewController {
         rootView.postCollectionView.dataSource = self
         rootView.categoryTabs.delegate = self
         rootView.getTextField().internalTextField.delegate = self
+        rootView.categoryTabs.delegate = self
     }
 }
     
@@ -241,6 +244,15 @@ extension SearchResultViewController: UITextFieldDelegate {
         }
         
         return true
+    }
+}
+
+// MARK: - MillieCategoryTabsDelegate
+extension SearchResultViewController: MillieCategoryTabsDelegate {
+    func didMillieCategoryTabsTab(index: Int) {
+        categoryTabIndex = index
+        rootView.updateTitle(MillieCategoryTabs.CategoryTabsConfigure.small.titles[index])
+        rootView.collectionView.reloadData()
     }
 }
 
