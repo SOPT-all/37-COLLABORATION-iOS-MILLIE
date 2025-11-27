@@ -21,6 +21,8 @@ final class SearchResultViewController: BaseUIViewController {
         banner: nil
     )
     
+    private var postData: [Post] = Post.mockPosts
+    
     // MARK: - UI Components
     
     private let rootView = SearchResultView()
@@ -48,6 +50,11 @@ final class SearchResultViewController: BaseUIViewController {
             SearchResultCell.self,
             forCellWithReuseIdentifier: SearchResultCell.identifier
         )
+        
+        rootView.postCollectionView.register(
+            PostListCell.self,
+            forCellWithReuseIdentifier: PostListCell.identifier
+        )
     }
     
     // MARK: - Delegate Method
@@ -55,6 +62,9 @@ final class SearchResultViewController: BaseUIViewController {
     override func setDelegate() {
         rootView.collectionView.delegate = self
         rootView.collectionView.dataSource = self
+        rootView.postCollectionView.delegate = self
+        rootView.postCollectionView.dataSource = self
+        rootView.categoryTabs.delegate = self
         rootView.getTextField().internalTextField.delegate = self
     }
 }
@@ -64,20 +74,36 @@ final class SearchResultViewController: BaseUIViewController {
 extension SearchResultViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if collectionView == rootView.postCollectionView {
+            return postData.count
+        }
         return searchResultData.books.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: SearchResultCell.identifier,
-            for: indexPath
-        ) as? SearchResultCell else {
-            return UICollectionViewCell()
+        if collectionView == rootView.postCollectionView {
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: PostListCell.identifier,
+                for: indexPath
+            ) as? PostListCell else {
+                return UICollectionViewCell()
+            }
+            
+            let post = postData[indexPath.item]
+            cell.configure(with: post)
+            return cell
+        } else {
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: SearchResultCell.identifier,
+                for: indexPath
+            ) as? SearchResultCell else {
+                return UICollectionViewCell()
+            }
+            
+            let book = searchResultData.books[indexPath.item]
+            cell.configure(with: book)
+            return cell
         }
-        
-        let book = searchResultData.books[indexPath.item]
-        cell.configure(with: book)
-        return cell
     }
 }
 
@@ -86,14 +112,24 @@ extension SearchResultViewController: UICollectionViewDataSource {
 extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cellWidth: CGFloat = 103
-        let cellHeight: CGFloat = 180
-        
-        return CGSize(width: cellWidth, height: cellHeight)
+        if collectionView == rootView.postCollectionView {
+            let sectionInset: CGFloat = 22
+            let width = collectionView.bounds.width - (sectionInset * 2)
+            let cellHeight: CGFloat = 132
+            return CGSize(width: width, height: cellHeight)
+        } else {
+            let cellWidth: CGFloat = 103
+            let cellHeight: CGFloat = 180
+            return CGSize(width: cellWidth, height: cellHeight)
+        }
     }
     
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        if collectionView == rootView.postCollectionView {
+            return 0
+        }
+        
         let totalWidth = collectionView.bounds.width
         let sectionInset: CGFloat = 21
         let cellWidth: CGFloat = 103
@@ -169,6 +205,22 @@ extension SearchResultViewController {
             
         case .failure(let error):
             print("도서 검색 실패: \(error)")
+        }
+    }
+}
+
+// MARK: - MillieCategoryTabsDelegate
+
+extension SearchResultViewController: MillieCategoryTabsDelegate {
+    func didMillieCategoryTabsTab(index: Int) {
+        switch index {
+        case 0:
+            rootView.showBookView()
+        case 2: 
+            rootView.showPostView()
+            rootView.postCollectionView.reloadData()
+        default:
+            rootView.showBookView()
         }
     }
 }

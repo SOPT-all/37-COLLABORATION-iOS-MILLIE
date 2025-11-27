@@ -43,6 +43,25 @@ final class SearchResultView: BaseUIView {
         return cv
     }()
     
+    // MARK: - Post UI Components
+    
+    private let postTitleLabel = UILabel()
+    private let postCountLabel = UILabel()
+    
+    lazy var postCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = 15
+        layout.sectionInset = UIEdgeInsets(top: 16, left: 22, bottom: 0, right: 22)
+        
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.backgroundColor = .clear
+        cv.showsVerticalScrollIndicator = false
+        return cv
+    }()
+    
+    private let viewAllButton = UIButton()
+    
     // MARK: - Init
     
     override init(frame: CGRect) {
@@ -106,6 +125,26 @@ final class SearchResultView: BaseUIView {
             $0.size = .small
         }
         
+        postTitleLabel.do {
+            $0.text = "포스트"
+            $0.font = FontManager.headline.font
+            $0.textColor = .black
+        }
+        
+        postCountLabel.do {
+            $0.text = "736"
+            $0.font = FontManager.body1.font
+            $0.textColor = UIColor(named: "millie_Purple")
+        }
+        
+        viewAllButton.do {
+            $0.setTitle("전체 보기", for: .normal)
+            $0.setTitleColor(.greyBlack, for: .normal)
+            $0.titleLabel?.font = FontManager.body2.font
+            $0.backgroundColor = .systemGray6
+            $0.layer.cornerRadius = 8
+        }
+        
         addSubviews(
             navigationTitleLabel,
             navigationButton,
@@ -125,7 +164,11 @@ final class SearchResultView: BaseUIView {
         contentView.addSubviews(
             titleLabel,
             totalBookCountLabel,
-            collectionView
+            collectionView,
+            postTitleLabel,
+            postCountLabel,
+            postCollectionView,
+            viewAllButton
         )
     }
     
@@ -210,6 +253,35 @@ final class SearchResultView: BaseUIView {
             $0.width.equalTo(60)
             $0.height.equalTo(60)
         }
+        
+        postTitleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(20)
+            $0.leading.equalToSuperview().inset(20)
+        }
+        
+        postCountLabel.snp.makeConstraints {
+            $0.leading.equalTo(postTitleLabel.snp.trailing).offset(8)
+            $0.centerY.equalTo(postTitleLabel)
+        }
+        
+        postCollectionView.snp.makeConstraints {
+            $0.top.equalTo(postTitleLabel.snp.bottom).offset(10)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(590)
+        }
+        
+        viewAllButton.snp.makeConstraints {
+            $0.top.equalTo(postCollectionView.snp.bottom).offset(8)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(329)
+            $0.height.equalTo(38)
+        }
+        
+        // Initially hide post UI
+        postTitleLabel.isHidden = true
+        postCountLabel.isHidden = true
+        postCollectionView.isHidden = true
+        viewAllButton.isHidden = true
     }
     
     // MARK: - Public Methods
@@ -224,6 +296,42 @@ final class SearchResultView: BaseUIView {
     
     func getSearchText() -> String? {
         return textField.text
+    }
+    
+    func showBookView() {
+        titleLabel.isHidden = false
+        totalBookCountLabel.isHidden = false
+        collectionView.isHidden = false
+        bannerContainerView.isHidden = false
+        
+        postTitleLabel.isHidden = true
+        postCountLabel.isHidden = true
+        postCollectionView.isHidden = true
+        viewAllButton.isHidden = true
+        
+        scrollView.snp.remakeConstraints {
+            $0.top.equalTo(categoryTabs.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(bannerContainerView.snp.top)
+        }
+    }
+    
+    func showPostView() {
+        titleLabel.isHidden = true
+        totalBookCountLabel.isHidden = true
+        collectionView.isHidden = true
+        bannerContainerView.isHidden = true
+        
+        postTitleLabel.isHidden = false
+        postCountLabel.isHidden = false
+        postCollectionView.isHidden = false
+        viewAllButton.isHidden = false
+        
+        scrollView.snp.remakeConstraints {
+            $0.top.equalTo(categoryTabs.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
+        }
     }
     
     func updateBanner(_ banner: Banner?) {
