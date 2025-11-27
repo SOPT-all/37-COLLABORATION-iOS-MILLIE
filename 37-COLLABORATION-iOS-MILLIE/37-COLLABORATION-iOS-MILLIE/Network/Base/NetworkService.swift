@@ -14,4 +14,5 @@ final class NetworkService {
     private init() { }
     
     let detailService: DetailServiceProtocol = DetailService()
+    let categoryService: CategoryServiceProtocol = CategoryService()
 }

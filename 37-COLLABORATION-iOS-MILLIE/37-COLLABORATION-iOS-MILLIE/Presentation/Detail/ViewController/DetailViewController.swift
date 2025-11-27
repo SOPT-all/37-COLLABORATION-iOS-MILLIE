@@ -12,38 +12,8 @@ import SnapKit
 class DetailViewController: BaseUIViewController {
     
     // MARK: - Properties
-    var bookDetailModel: BookDetailModel = BookDetailModel(
-        bookId: 1,
-        bookCoverImageUrl: URL(string: "naver.com")!,
-        bookTitle: "홍학의 자리",
-        bookAuthor: "정해연",
-        bookType: "소설",
-        publishedDate: "2021.07.21",
-        bookRate: 3.9,
-        totalReviewCount: 2,
-        completionRate: 80,
-        bookDescription: "\"이 행복이 영원할 거라고 생각한 적은 없었다. 그러나 이런 끝을 상상한 적도 없었다.\"예측 불가! 한국 미스터리 사상 전무후무한 반전! 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구",
-        reviews: [
-            BookDetailModel.ReviewModel(
-                reviewId: 1,
-                bookId: 1,
-                reviewerName: "마침표수집가",
-                createdDate: "2025.09.20",
-                reviewContent: "이야기의 흐름보다 분위기와 감정이 중심이라 호불호는 있을 듯. 하지만 저는 좋았습니다.",
-                liked: false,
-                likeCount: 58
-            ),
-            BookDetailModel.ReviewModel(
-                reviewId: 2,
-                bookId: 1,
-                reviewerName: "소다맛마시멜로우",
-                createdDate: "2025.10.28",
-                reviewContent: "하 읽은 사람들이랑 수다떨고싶다....",
-                liked: false,
-                likeCount: 126
-            ),
-        ]
-    )
+    var bookId: Int? = 1
+    private var bookDetailInfoData: BookDetailInfoData?
     
     // MARK: - UI Components
     let detailNavigationBarView = DetailNavigationBarView()
@@ -65,7 +35,18 @@ class DetailViewController: BaseUIViewController {
     
     let detailBottomBarView = DetailBottomBarView()
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        if let bookId {
+            Task {
+                await getBookDetailInfo(bookId: bookId)
+            }
+        }
+    }
+    
     override func setUI() {
+        navigationController?.navigationBar.isHidden = true
         view.addSubviews(mainTableView, detailNavigationBarView, detailBottomBarView)
     }
     
@@ -98,7 +79,7 @@ class DetailViewController: BaseUIViewController {
 
 extension DetailViewController {
     @objc private func touchUpInsideBackButton() {
-        
+        navigationController?.popViewController(animated: true)
     }
     @objc private func touchUpInsideLikeButton() {
         
@@ -155,8 +136,12 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailPrimaryInfoTableViewCell.identifier, for: indexPath) as? DetailPrimaryInfoTableViewCell else {
                 return UITableViewCell()
             }
-            cell.configure(bookDetailModel: bookDetailModel)
-            tableView.backgroundColor = cell.bookImageView.image?.averageColor
+            if let bookDetailInfoData {
+                cell.configure(bookDetailInfoData: bookDetailInfoData)
+                cell.updateBackgroundColor = { color in
+                    tableView.backgroundColor = color
+                }
+            }
             return cell
         case .millieReadingReport:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailMillieReadingReportTableViewCell.identifier, for: indexPath) as? DetailMillieReadingReportTableViewCell else {
@@ -167,7 +152,9 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailDescriptionTableViewCell.identifier, for: indexPath) as? DetailDescriptionTableViewCell else {
                 return UITableViewCell()
             }
-            cell.configure(bookDetailModel: bookDetailModel)
+            if let bookDetailInfoData {
+                cell.configure(bookDetailInfoData: bookDetailInfoData)
+            }
             cell.reloadForNewHeight = {
                 // reloadRows로 실행하면 첫번째 터치 때 업데이트 안되는 버그가 있음 (이유는 모르겠음)
                 tableView.reloadData()
@@ -177,7 +164,9 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailReviewTableViewCell.identifier, for: indexPath) as? DetailReviewTableViewCell else {
                 return UITableViewCell()
             }
-            cell.reviewView.bind(bookDetailModel.reviews)
+            if let bookDetailInfoData {
+                cell.reviewView.bind(bookDetailInfoData.reviews)
+            }
             return cell
         case .readingData:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailReadingDataTableViewCell.identifier, for: indexPath) as? DetailReadingDataTableViewCell else {
@@ -196,33 +185,16 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
 // MARK: - Network
 
 extension DetailViewController {
-    @objc func handleReviewLike(_ sender: Any?) {
-        guard let cell = sender as? ReviewCell,
-              let reviewId = cell.reviewId else { return }
-        
-        print("좋아요 클릭한 리뷰 id: \(reviewId)")
-        
-        Task { [weak self] in
-            await self?.toggleReviewLike(reviewId: reviewId, cell: cell)
-        }
-    }
-    
-    func toggleReviewLike(reviewId: Int, cell: ReviewCell) async {
-        let result = await NetworkService.shared.detailService.toggleReviewLike(reviewId: reviewId)
-        
+    func getBookDetailInfo(bookId: Int) async {
+        let result = await NetworkService.shared.detailService.getBookDetailInfo(bookId: bookId)
+
         switch result {
         case .success(let data):
             guard let dto = data.data else { return }
-            if let index = bookDetailModel.reviews.firstIndex(where: { $0.reviewId == reviewId }) {
-                bookDetailModel.reviews[index].liked = dto.liked
-                bookDetailModel.reviews[index].likeCount = dto.likeCount
-            }
-            DispatchQueue.main.async {
-                cell.updateLikeUI(liked: dto.liked, count: dto.likeCount)
-            }
-            
+            bookDetailInfoData = dto
+            mainTableView.reloadData()
         case .failure(let error):
-            print("❌ 리뷰 좋아요 실패: \(error)")
+            print("❌ 도서 상세 정보 조회 실패: \(error)")
         }
     }
 }

@@ -10,6 +10,7 @@ import Foundation
 
 enum DetailAPI {
     case toggleReviewLike(reviewId: Int)
+    case getBookDetailInfo(bookId: Int)
 }
 
 extension DetailAPI: BaseTargetType {
@@ -21,6 +22,8 @@ extension DetailAPI: BaseTargetType {
         switch self {
         case .toggleReviewLike(let reviewId):
             return "/reviews/\(reviewId)/like"
+        case .getBookDetailInfo(let bookId):
+            return "/books/\(bookId)"
         }
     }
     
@@ -28,13 +31,12 @@ extension DetailAPI: BaseTargetType {
         switch self {
         case .toggleReviewLike:
             return .post
+        case .getBookDetailInfo:
+            return .get
         }
     }
     
     var queryItems: [URLQueryItem]? {
-        switch self {
-        case .toggleReviewLike:
-            return nil
-        }
+        return nil
     }
 }
