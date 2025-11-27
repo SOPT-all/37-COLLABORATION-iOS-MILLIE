@@ -224,3 +224,55 @@ extension SearchResultViewController: MillieCategoryTabsDelegate {
         }
     }
 }
+
+// MARK: - UITextFieldDelegate
+
+extension SearchResultViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        
+        guard let keyword = textField.text, !keyword.isEmpty else {
+            print("검색어가 비어있습니다")
+            return true
+        }
+        
+        Task {
+            await searchBooks(keyword: keyword)
+        }
+        
+        return true
+    }
+}
+
+// MARK: - Network
+
+extension SearchResultViewController {
+    func searchBooks(keyword: String) async {
+        let result = await NetworkService.shared.searchService.searchBooks(keyword: keyword)
+        
+        switch result {
+        case .success(let response):
+            guard let data = response.data else { return }
+            
+            let books = data.books.map { $0.toDomain() }
+            let banner = data.banner?.toDomain()
+            
+            searchResultData = SearchResultData(
+                keyword: data.keyword,
+                bookCount: data.bookCount,
+                books: books,
+                banner: banner
+            )
+            
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.rootView.updateBookCount(self.searchResultData.bookCount)
+                self.rootView.updateBanner(self.searchResultData.banner)
+                self.rootView.collectionView.reloadData()
+            }
+            
+        case .failure(let error):
+            print("도서 검색 실패: \(error)")
+        }
+    }
+}
