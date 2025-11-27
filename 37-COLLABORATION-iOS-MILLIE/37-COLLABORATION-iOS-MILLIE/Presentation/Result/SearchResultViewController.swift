@@ -24,6 +24,12 @@ final class SearchResultViewController: BaseUIViewController {
     )
     
     private var postData: [Post] = Post.mockPosts
+    private var libraryMockData: [(image: UIImage, name: String)] = [
+        (.libraryProfile1, "홍학의 자리 서재"),
+        (.libraryProfile2, "홍학의 자리 에반하다 서재"),
+        (.libraryProfile1, "홍학의 자리 에반하다 서재"),
+        (.libraryProfile3, "홍학의 자리 서재"),
+    ]
     
     // MARK: - UI Components
     
@@ -252,6 +258,7 @@ extension SearchResultViewController: MillieCategoryTabsDelegate {
     func didMillieCategoryTabsTab(index: Int) {
         categoryTabIndex = index
         rootView.updateTitle(MillieCategoryTabs.CategoryTabsConfigure.small.titles[index])
+        rootView.updateBookCount(libraryMockData.count)
         rootView.collectionView.reloadData()
     }
 }
