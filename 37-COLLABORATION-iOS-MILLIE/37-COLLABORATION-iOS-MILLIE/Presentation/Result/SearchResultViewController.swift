@@ -109,5 +109,9 @@ extension SearchResultViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedBook = searchResultData.books[indexPath.item]
+        
+        let detailViewController = DetailViewController()
+        detailViewController.bookId = selectedBook.bookId
+        navigationController?.pushViewController(detailViewController, animated: true)
     }
 }

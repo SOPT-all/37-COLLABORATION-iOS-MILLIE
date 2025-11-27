@@ -14,7 +14,7 @@ final class ReviewView: BaseUIView {
     
     // MARK: - Properties
     
-    private var data: [BookDetailModel.ReviewModel] = []
+    private var data: [ToggleReviewLikeData] = []
     
     
     // MARK: - UI Components
@@ -56,7 +56,7 @@ final class ReviewView: BaseUIView {
     
     // MARK: - Public bind
     
-    func bind(_ data: [BookDetailModel.ReviewModel]) {
+    func bind(_ data: [ToggleReviewLikeData]) {
         self.data = data
         header.setReviewCount(count: data.count)
         collectionView.reloadData()

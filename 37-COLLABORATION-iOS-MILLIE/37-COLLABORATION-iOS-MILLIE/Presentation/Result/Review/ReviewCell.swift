@@ -101,7 +101,7 @@ final class ReviewCell: UICollectionViewCell {
 }
 
 extension ReviewCell {
-    func dataBind(data: BookDetailModel.ReviewModel) {
+    func dataBind(data: ToggleReviewLikeData) {
         nameLabel.text = data.reviewerName
         dateLabel.text = data.createdDate
         reviewLabel.text = data.reviewContent
