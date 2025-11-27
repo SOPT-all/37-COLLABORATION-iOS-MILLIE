@@ -40,19 +40,23 @@ final class SearchHomeView: BaseUIView {
     //MARK:  - Set UI
     
     override func setUI() {
-        addSubviews(headerView, scrollView)
-        
-        scrollView.addSubview(contentView)
-        
-        contentView.addSubviews(
+        addSubviews(
+            headerView,
             millieSearchTextField,
             realTimeRank,
             shortcutSection,
             categoryTabs,
+            scrollView
+        )
+        
+        scrollView.addSubview(contentView)
+        
+        contentView.addSubviews(
             categoryLabel,
             bookCategoryView
         )
     }
+    
     
     //MARK:  - Set Layout
     
@@ -64,18 +68,8 @@ final class SearchHomeView: BaseUIView {
             $0.height.equalTo(48)
         }
         
-        scrollView.snp.makeConstraints {
-            $0.top.equalTo(headerView.snp.bottom)
-            $0.leading.trailing.bottom.equalToSuperview()
-        }
-        
-        contentView.snp.makeConstraints {
-            $0.edges.equalTo(scrollView)
-            $0.width.equalTo(scrollView)
-        }
-        
         millieSearchTextField.snp.makeConstraints {
-            $0.top.equalTo(contentView.snp.top).offset(8)
+            $0.top.equalTo(headerView.snp.bottom).offset(8)
             $0.leading.trailing.equalToSuperview().inset(18)
             $0.height.equalTo(45)
         }
@@ -98,8 +92,18 @@ final class SearchHomeView: BaseUIView {
             $0.height.equalTo(45)
         }
         
+        scrollView.snp.makeConstraints {
+            $0.top.equalTo(categoryTabs.snp.bottom).offset(0)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        contentView.snp.makeConstraints {
+            $0.edges.equalTo(scrollView)
+            $0.width.equalTo(scrollView)
+        }
+        
         categoryLabel.snp.makeConstraints {
-            $0.top.equalTo(categoryTabs.snp.bottom).offset(17)
+            $0.top.equalTo(contentView.snp.top).offset(17)
             $0.leading.trailing.equalToSuperview().inset(22)
             $0.height.equalTo(28)
         }
