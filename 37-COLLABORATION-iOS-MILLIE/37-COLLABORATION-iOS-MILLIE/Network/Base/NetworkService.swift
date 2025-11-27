@@ -14,4 +14,6 @@ final class NetworkService {
     private init() { }
     
     let searchService: SearchServiceProtocol = SearchService()
+    let detailService: DetailServiceProtocol = DetailService()
+    let categoryService: CategoryServiceProtocol = CategoryService()
 }

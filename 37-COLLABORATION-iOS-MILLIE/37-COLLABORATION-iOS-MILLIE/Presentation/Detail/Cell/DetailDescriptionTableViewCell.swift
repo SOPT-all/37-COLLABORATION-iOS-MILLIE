@@ -83,8 +83,8 @@ class DetailDescriptionTableViewCell: UITableViewCell {
         reloadForNewHeight?()
     }
     
-    func configure(bookDetailModel: BookDetailModel) {
-        descriptionLabel.text = bookDetailModel.bookDescription
+    func configure(bookDetailInfoData: BookDetailInfoData) {
+        descriptionLabel.text = bookDetailInfoData.bookDescription
         moreButton.isHidden = descriptionLabel.fullNumberOfLines <= 3 || !moreButton.isEnabled
     }
 }

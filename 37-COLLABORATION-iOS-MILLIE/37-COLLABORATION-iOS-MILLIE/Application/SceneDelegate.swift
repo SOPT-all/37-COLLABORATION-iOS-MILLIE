@@ -21,7 +21,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // 3.
 //        let vc = UINavigationController(rootViewController: ViewController())
         // 4.
-//        window.rootViewController = MillieTabBar()
         window.rootViewController = MillieTabBar()
         // 5.
         self.window = window
