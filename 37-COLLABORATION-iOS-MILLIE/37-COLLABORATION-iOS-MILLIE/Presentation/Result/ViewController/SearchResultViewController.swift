@@ -12,8 +12,10 @@ import Then
 
 final class SearchResultViewController: BaseUIViewController {
     
+    
     // MARK: - Properties
     
+    private let keyword: String
     private var searchResultData: SearchResultData = SearchResultData(
         keyword: "",
         bookCount: 0,
@@ -31,12 +33,24 @@ final class SearchResultViewController: BaseUIViewController {
     
     // MARK: - Life Cycle
     
+    init(keyword: String) {
+        self.keyword = keyword
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func loadView() {
         view = rootView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        Task {
+            await searchBooks(keyword: keyword)
+        }
         registerCell()
         rootView.categoryTabs.setInitialIndicatorPosition()
     }

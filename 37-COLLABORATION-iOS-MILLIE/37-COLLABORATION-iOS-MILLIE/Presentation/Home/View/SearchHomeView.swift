@@ -115,3 +115,9 @@ final class SearchHomeView: BaseUIView {
         }
     }
 }
+
+extension SearchHomeView {
+    func getTextField() -> MillieSearchTextField {
+        return millieSearchTextField
+    }
+}
