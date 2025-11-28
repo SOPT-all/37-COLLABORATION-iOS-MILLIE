@@ -364,12 +364,28 @@ final class SearchResultView: BaseUIView {
         
 
         
+        // Banner (Active)
         bannerContainerView.snp.remakeConstraints {
             $0.top.equalTo(collectionView.snp.bottom).offset(24)
             $0.centerX.equalToSuperview()
             $0.width.equalTo(329)
             $0.height.equalTo(84)
-            $0.bottom.equalToSuperview().inset(40) // contentView의 bottom과 연결
+            $0.bottom.equalToSuperview().inset(40)
+        }
+        
+        // ViewAllButton (Inactive)
+        viewAllButton.snp.remakeConstraints {
+            $0.top.equalTo(postCollectionView.snp.bottom).offset(24)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(329)
+            $0.height.equalTo(38)
+        }
+        
+        // LibraryCollectionView (Inactive)
+        libraryCollectionView.snp.remakeConstraints {
+            $0.top.equalTo(libraryTitleLabel.snp.bottom).offset(16)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(150)
         }
     }
     
@@ -387,12 +403,28 @@ final class SearchResultView: BaseUIView {
         libraryCountLabel.isHidden = true
         libraryCollectionView.isHidden = true
         
+        // Banner (Inactive)
+        bannerContainerView.snp.remakeConstraints {
+            $0.top.equalTo(collectionView.snp.bottom).offset(24)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(329)
+            $0.height.equalTo(84)
+        }
+        
+        // ViewAllButton (Active)
         viewAllButton.snp.remakeConstraints {
             $0.top.equalTo(postCollectionView.snp.bottom).offset(24)
             $0.centerX.equalToSuperview()
             $0.width.equalTo(329)
             $0.height.equalTo(38)
-            $0.bottom.equalToSuperview().inset(40) // contentView의 bottom과 연결
+            $0.bottom.equalToSuperview().inset(40)
+        }
+        
+        // LibraryCollectionView (Inactive)
+        libraryCollectionView.snp.remakeConstraints {
+            $0.top.equalTo(libraryTitleLabel.snp.bottom).offset(16)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(150)
         }
     }
     
@@ -410,11 +442,28 @@ final class SearchResultView: BaseUIView {
         postCollectionView.isHidden = true
         viewAllButton.isHidden = true
         
+        // Banner (Inactive)
+        bannerContainerView.snp.remakeConstraints {
+            $0.top.equalTo(collectionView.snp.bottom).offset(24)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(329)
+            $0.height.equalTo(84)
+        }
+        
+        // ViewAllButton (Inactive)
+        viewAllButton.snp.remakeConstraints {
+            $0.top.equalTo(postCollectionView.snp.bottom).offset(24)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(329)
+            $0.height.equalTo(38)
+        }
+        
+        // LibraryCollectionView (Active)
         libraryCollectionView.snp.remakeConstraints {
             $0.top.equalTo(libraryTitleLabel.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(150)
-            $0.bottom.equalToSuperview().inset(40) // contentView의 bottom과 연결
+            $0.bottom.equalToSuperview().inset(40)
         }
     }
     
