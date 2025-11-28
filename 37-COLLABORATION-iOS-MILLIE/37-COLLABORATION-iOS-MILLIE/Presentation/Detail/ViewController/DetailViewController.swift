@@ -14,6 +14,7 @@ class DetailViewController: BaseUIViewController {
     // MARK: - Properties
     var bookId: Int? = 1
     private var bookDetailInfoData: BookDetailInfoData?
+    private var toggleReviewData: ToggleReviewLikeData?
     
     // MARK: - UI Components
     let detailNavigationBarView = DetailNavigationBarView()
@@ -195,6 +196,34 @@ extension DetailViewController {
             mainTableView.reloadData()
         case .failure(let error):
             print("❌ 도서 상세 정보 조회 실패: \(error)")
+        }
+    }
+    
+    @objc func handleLikeButtonTapped(_ sender: LikeButton) {
+        let reviewId = sender.reviewId
+        print("좋아요 클릭됨, reviewId = \(reviewId)")
+        Task {
+            await toggleReviewLike(reviewId)
+        }
+    }
+    
+    func toggleReviewLike(_ reviewId: Int) async {
+        let result = await NetworkService.shared.detailService.toggleReviewLike(reviewId: reviewId)
+        switch result {
+        case .success(let data):
+            guard let dto = data.data else { return }
+            toggleReviewData = dto
+            if let index = bookDetailInfoData?.reviews.firstIndex(where: { $0.reviewId == reviewId }) {
+                bookDetailInfoData?.reviews[index].liked = dto.liked
+                bookDetailInfoData?.reviews[index].likeCount = dto.likeCount
+            }
+            DispatchQueue.main.async {
+                self.mainTableView.reloadSections(IndexSet(integer: DetailViewController.MainTableViewSection.review.rawValue), with: .none)
+            }
+            print("👍 성공: \(data)")
+            
+        case .failure(let error):
+            print("❌ 실패: \(error)")
         }
     }
 }

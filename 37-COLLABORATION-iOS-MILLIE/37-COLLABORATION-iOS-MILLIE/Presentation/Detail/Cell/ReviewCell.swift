@@ -106,6 +106,6 @@ extension ReviewCell {
         nameLabel.text = data.reviewerName
         dateLabel.text = data.createdDate
         reviewLabel.text = data.reviewContent
-        likeButton.setLikeCount(data.likeCount)
+        likeButton.setLikeCount(id: data.reviewId, liked: data.liked, count: data.likeCount)
     }
 }

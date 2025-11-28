@@ -20,5 +20,5 @@ struct BookDetailInfoData: Decodable {
     let totalReviewCount: Int
     let completionRate: Int
     let bookDescription: String
-    let reviews: [ToggleReviewLikeData]
+    var reviews: [ToggleReviewLikeData]
 }
