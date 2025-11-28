@@ -27,6 +27,7 @@ class DetailViewController: BaseUIViewController {
         $0.sectionHeaderHeight = 0
         let navHeader = DetailNavigationBarView()
         navHeader.frame = CGRect(x: 0, y: 26, width: 375, height: 50)
+        navHeader.backButton.addTarget(self, action: #selector(touchUpInsideBackButton), for: .touchUpInside)
         $0.tableHeaderView = navHeader
         $0.tableFooterView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: CGFloat.leastNormalMagnitude, height: CGFloat.leastNormalMagnitude)))
         $0.register(DetailPrimaryInfoTableViewCell.self, forCellReuseIdentifier: DetailPrimaryInfoTableViewCell.identifier)
