@@ -188,6 +188,7 @@
 		};
 		334418582EC972D7004CEA66 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CA8D83372ED88AAE006C3963 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -278,6 +279,7 @@
 		};
 		3344185A2EC972D7004CEA66 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CA8D83372ED88AAE006C3963 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
