@@ -26,6 +26,7 @@ final class SearchHomeViewController: BaseUIViewController {
     override func setDelegate() {
         homeView.bookCategoryView.collectionView.dataSource = self
         homeView.bookCategoryView.collectionView.delegate = self
+        homeView.getTextField().internalTextField.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -117,5 +118,17 @@ extension SearchHomeViewController: UICollectionViewDataSource {
 extension SearchHomeViewController: UICollectionViewDelegate {
     func scrollViewDidLayoutSubviews(_ scrollView: UIScrollView) {
         homeView.bookCategoryView.updateHeight()
+    }
+}
+
+extension SearchHomeViewController: UITextFieldDelegate {
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard let keyword = textField.text, !keyword.isEmpty else { return true }
+        textField.resignFirstResponder()
+
+        let vc = SearchResultViewController(keyword: keyword)
+        navigationController?.pushViewController(vc, animated: true)
+        return true
     }
 }

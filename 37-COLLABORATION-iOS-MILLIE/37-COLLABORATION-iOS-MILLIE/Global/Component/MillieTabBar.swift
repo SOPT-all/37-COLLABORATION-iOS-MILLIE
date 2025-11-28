@@ -16,15 +16,15 @@ final class MillieTabBar: UITabBarController {
     }
 
     func setTabBar() {
-        let vc1 = UINavigationController(rootViewController: SearchResultViewController())
+        let vc1 = UINavigationController(rootViewController: ElseViewController())
         vc1.tabBarItem = UITabBarItem(title: "투데이", image: .navToday, tag: 1)
-        let vc2 = UINavigationController(rootViewController: ViewController2())
+        let vc2 = UINavigationController(rootViewController: ElseViewController())
         vc2.tabBarItem = UITabBarItem(title: "완독지수", image: .navWandok, tag: 2)
         let vc3 = UINavigationController(rootViewController: SearchHomeViewController())
         vc3.tabBarItem = UITabBarItem(title: "검색", image: .navSearch, tag: 3)
-        let vc4 = UINavigationController(rootViewController: ViewController2())
+        let vc4 = UINavigationController(rootViewController: ElseViewController())
         vc4.tabBarItem = UITabBarItem(title: "내서재", image: .navShelf, tag: 4)
-        let vc5 = UINavigationController(rootViewController: ViewController2())
+        let vc5 = UINavigationController(rootViewController: ElseViewController())
         vc5.tabBarItem = UITabBarItem(title: "관리", image: .navSetting, tag: 5)
         self.viewControllers = [vc1, vc2, vc3, vc4, vc5]
     }
