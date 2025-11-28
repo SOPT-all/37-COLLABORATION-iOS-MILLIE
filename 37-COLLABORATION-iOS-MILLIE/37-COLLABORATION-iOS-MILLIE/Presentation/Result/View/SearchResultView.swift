@@ -40,6 +40,7 @@ final class SearchResultView: BaseUIView {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = .clear
         cv.showsVerticalScrollIndicator = false
+        cv.isScrollEnabled = false
         return cv
     }()
     
@@ -181,21 +182,16 @@ final class SearchResultView: BaseUIView {
             navigationButton,
             textField,
             categoryTabs,
-            scrollView,
-            bannerContainerView
-        )
-        
-        bannerContainerView.addSubviews(
-            bannerTitleLabel,
-            bannerContentLabel,
-            bannerImageView
+            scrollView
         )
         
         scrollView.addSubview(contentView)
+        
         contentView.addSubviews(
             titleLabel,
             totalBookCountLabel,
             collectionView,
+            bannerContainerView,
             postTitleLabel,
             postCountLabel,
             postCollectionView,
@@ -204,12 +200,18 @@ final class SearchResultView: BaseUIView {
             libraryCollectionView,
             viewAllButton
         )
+        
+        bannerContainerView.addSubviews(
+            bannerTitleLabel,
+            bannerContentLabel,
+            bannerImageView
+        )
     }
     
     override func setLayout() {
         
         navigationTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide).offset(20)
+            $0.top.equalTo(safeAreaLayoutGuide).offset(14)
             $0.centerX.equalToSuperview()
         }
         
@@ -233,34 +235,34 @@ final class SearchResultView: BaseUIView {
         scrollView.snp.makeConstraints {
             $0.top.equalTo(categoryTabs.snp.bottom)
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(bannerContainerView.snp.top)
+            $0.bottom.equalToSuperview()
         }
         
         contentView.snp.makeConstraints {
-            $0.edges.equalTo(scrollView)
-            $0.width.equalTo(scrollView)
+            $0.edges.equalTo(scrollView.contentLayoutGuide)
+            $0.width.equalTo(scrollView.frameLayoutGuide)
         }
         
+       
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(20)
-            $0.leading.equalToSuperview().inset(20)
+            $0.top.equalToSuperview().offset(24)
+            $0.leading.equalToSuperview().inset(24)
         }
         
         totalBookCountLabel.snp.makeConstraints {
-            $0.leading.equalTo(titleLabel.snp.trailing).offset(8)
+            $0.leading.equalTo(titleLabel.snp.trailing).offset(6)
             $0.centerY.equalTo(titleLabel)
         }
         
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(-10)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview()
-            $0.height.equalTo(800) 
+            $0.height.equalTo(800)
         }
         
         bannerContainerView.snp.makeConstraints {
+            $0.top.equalTo(collectionView.snp.bottom).offset(24)
             $0.centerX.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(109)
             $0.width.equalTo(329)
             $0.height.equalTo(84)
         }
@@ -287,54 +289,45 @@ final class SearchResultView: BaseUIView {
         }
         
         postTitleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(20)
-            $0.leading.equalToSuperview().inset(20)
+            $0.top.equalToSuperview().offset(24)
+            $0.leading.equalToSuperview().inset(24)
         }
         
         postCountLabel.snp.makeConstraints {
-            $0.leading.equalTo(postTitleLabel.snp.trailing).offset(8)
+            $0.leading.equalTo(postTitleLabel.snp.trailing).offset(6)
             $0.centerY.equalTo(postTitleLabel)
         }
         
         postCollectionView.snp.makeConstraints {
-            $0.top.equalTo(postTitleLabel.snp.bottom).offset(10)
+            $0.top.equalTo(postTitleLabel.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(590)
         }
         
         viewAllButton.snp.makeConstraints {
-            $0.top.equalTo(postCollectionView.snp.bottom).offset(8)
+            $0.top.equalTo(postCollectionView.snp.bottom).offset(24)
             $0.centerX.equalToSuperview()
             $0.width.equalTo(329)
             $0.height.equalTo(38)
         }
         
         libraryTitleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(20)
-            $0.leading.equalToSuperview().inset(20)
+            $0.top.equalToSuperview().offset(24)
+            $0.leading.equalToSuperview().inset(24)
         }
         
         libraryCountLabel.snp.makeConstraints {
-            $0.leading.equalTo(libraryTitleLabel.snp.trailing).offset(8)
+            $0.leading.equalTo(libraryTitleLabel.snp.trailing).offset(6)
             $0.centerY.equalTo(libraryTitleLabel)
         }
         
         libraryCollectionView.snp.makeConstraints {
-            $0.top.equalTo(libraryTitleLabel.snp.bottom).offset(5)
+            $0.top.equalTo(libraryTitleLabel.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(150)
         }
         
-        // Initially hide post UI
-        postTitleLabel.isHidden = true
-        postCountLabel.isHidden = true
-        postCollectionView.isHidden = true
-        viewAllButton.isHidden = true
-        
-        // Initially hide library UI
-        libraryTitleLabel.isHidden = true
-        libraryCountLabel.isHidden = true
-        libraryCollectionView.isHidden = true
+        showBookView()
     }
     
     // MARK: - Public Methods
@@ -365,59 +358,63 @@ final class SearchResultView: BaseUIView {
         postCountLabel.isHidden = true
         postCollectionView.isHidden = true
         viewAllButton.isHidden = true
-        
         libraryTitleLabel.isHidden = true
         libraryCountLabel.isHidden = true
         libraryCollectionView.isHidden = true
         
-        scrollView.snp.remakeConstraints {
-            $0.top.equalTo(categoryTabs.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(bannerContainerView.snp.top)
+
+        
+        bannerContainerView.snp.remakeConstraints {
+            $0.top.equalTo(collectionView.snp.bottom).offset(24)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(329)
+            $0.height.equalTo(84)
+            $0.bottom.equalToSuperview().inset(40) // contentView의 bottom과 연결
         }
     }
     
     func showPostView() {
-        titleLabel.isHidden = true
-        totalBookCountLabel.isHidden = true
-        collectionView.isHidden = true
-        bannerContainerView.isHidden = true
-        
         postTitleLabel.isHidden = false
         postCountLabel.isHidden = false
         postCollectionView.isHidden = false
         viewAllButton.isHidden = false
         
-        libraryTitleLabel.isHidden = true
-        libraryCountLabel.isHidden = true
-        libraryCollectionView.isHidden = true
-        
-        scrollView.snp.remakeConstraints {
-            $0.top.equalTo(categoryTabs.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
-        }
-    }
-    
-    func showLibraryView() {
         titleLabel.isHidden = true
         totalBookCountLabel.isHidden = true
         collectionView.isHidden = true
         bannerContainerView.isHidden = true
+        libraryTitleLabel.isHidden = true
+        libraryCountLabel.isHidden = true
+        libraryCollectionView.isHidden = true
         
+        viewAllButton.snp.remakeConstraints {
+            $0.top.equalTo(postCollectionView.snp.bottom).offset(24)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(329)
+            $0.height.equalTo(38)
+            $0.bottom.equalToSuperview().inset(40) // contentView의 bottom과 연결
+        }
+    }
+    
+    func showLibraryView() {
+        libraryTitleLabel.isHidden = false
+        libraryCountLabel.isHidden = false
+        libraryCollectionView.isHidden = false
+        
+        titleLabel.isHidden = true
+        totalBookCountLabel.isHidden = true
+        collectionView.isHidden = true
+        bannerContainerView.isHidden = true
         postTitleLabel.isHidden = true
         postCountLabel.isHidden = true
         postCollectionView.isHidden = true
         viewAllButton.isHidden = true
         
-        libraryTitleLabel.isHidden = false
-        libraryCountLabel.isHidden = false
-        libraryCollectionView.isHidden = false
-        
-        scrollView.snp.remakeConstraints {
-            $0.top.equalTo(categoryTabs.snp.bottom)
+        libraryCollectionView.snp.remakeConstraints {
+            $0.top.equalTo(libraryTitleLabel.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
+            $0.height.equalTo(150)
+            $0.bottom.equalToSuperview().inset(40) // contentView의 bottom과 연결
         }
     }
     
@@ -443,6 +440,11 @@ final class SearchResultView: BaseUIView {
             )
         } else {
             print("배너 이미지 URL 오류 - bannerId: \(banner.bannerId), URL: \(banner.bannerImageUrl)")
+        }
+    }
+    func updateCollectionViewHeight(_ height: CGFloat) {
+        collectionView.snp.updateConstraints {
+            $0.height.equalTo(height)
         }
     }
 }

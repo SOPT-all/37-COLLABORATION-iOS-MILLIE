@@ -164,7 +164,7 @@ extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
             return CGSize(width: cellWidth, height: cellHeight)
         } else {
             let cellWidth: CGFloat = 103
-            let cellHeight: CGFloat = 230
+            let cellHeight: CGFloat = 260
             return CGSize(width: cellWidth, height: cellHeight)
         }
     }
@@ -246,6 +246,8 @@ extension SearchResultViewController {
                 self.rootView.updateBookCount(self.searchResultData.bookCount)
                 self.rootView.updateBanner(self.searchResultData.banner)
                 self.rootView.collectionView.reloadData()
+                self.rootView.collectionView.layoutIfNeeded()
+                self.rootView.updateCollectionViewHeight(self.rootView.collectionView.contentSize.height)
             }
             
         case .failure(let error):
