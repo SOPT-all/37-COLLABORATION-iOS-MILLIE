@@ -218,7 +218,7 @@ extension DetailViewController {
                 bookDetailInfoData?.reviews[index].likeCount = dto.likeCount
             }
             DispatchQueue.main.async {
-                self.mainTableView.reloadSections(IndexSet(integer: DetailViewController.MainTableViewSection.review.rawValue), with: .none)
+                self.mainTableView.reloadData()
             }
             print("👍 성공: \(data)")
             

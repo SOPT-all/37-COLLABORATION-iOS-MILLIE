@@ -34,7 +34,7 @@ final class MillieTabBar: UITabBarController {
         
         // 배경
         barAppearance.configureWithOpaqueBackground()
-        barAppearance.backgroundColor = .lightGrey1
+        barAppearance.backgroundColor = .background
         barAppearance.shadowColor = .lightGrey2
         
         // 아이콘 기본 색상 설정
