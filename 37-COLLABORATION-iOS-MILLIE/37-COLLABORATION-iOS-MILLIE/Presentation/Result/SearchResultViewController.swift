@@ -39,6 +39,11 @@ final class SearchResultViewController: BaseUIViewController {
         rootView.categoryTabs.setInitialIndicatorPosition()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
     // MARK: - Custom Method
     
     override func setUI() {
@@ -119,7 +124,7 @@ extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
             return CGSize(width: width, height: cellHeight)
         } else {
             let cellWidth: CGFloat = 103
-            let cellHeight: CGFloat = 180
+            let cellHeight: CGFloat = 230
             return CGSize(width: cellWidth, height: cellHeight)
         }
     }

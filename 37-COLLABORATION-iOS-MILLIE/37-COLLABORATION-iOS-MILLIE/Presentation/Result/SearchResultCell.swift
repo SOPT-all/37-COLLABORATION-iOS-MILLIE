@@ -94,37 +94,36 @@ final class SearchResultCell: UICollectionViewCell {
     private func setLayout() {
         
         bookImageView.snp.makeConstraints {
-            $0.top.horizontalEdges.equalToSuperview()
+            $0.top.leading.equalToSuperview()
             $0.width.equalTo(103)
             $0.height.equalTo(150)
         }
         
         bookTitleLabel.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview().inset(5.5)
-            $0.top.equalTo(bookImageView.snp.bottom).offset(10)
-            $0.width.equalTo(bookImageView)
+            $0.horizontalEdges.equalToSuperview()
+            $0.top.equalTo(bookImageView.snp.bottom).offset(8)
         }
         
         bookAuthorLabel.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview().inset(5.5)
-            $0.top.equalTo(bookTitleLabel.snp.bottom).offset(1)
+            $0.horizontalEdges.equalToSuperview()
+            $0.top.equalTo(bookTitleLabel.snp.bottom).offset(2)
         }
         
         readingProgressImageView.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(5.5)
+            $0.leading.equalToSuperview()
+            $0.top.equalTo(bookAuthorLabel.snp.bottom).offset(4)
             $0.size.equalTo(15)
         }
         
         readingProgressLabel.snp.makeConstraints {
-            $0.top.equalTo(bookAuthorLabel.snp.bottom).offset(1)
             $0.leading.equalTo(readingProgressImageView.snp.trailing).offset(4)
-            $0.centerY.equalTo(readingProgressImageView.snp.centerY)
-            $0.bottom.equalToSuperview()
+            $0.centerY.equalTo(readingProgressImageView)
         }
         
         totalReadingTimeLabel.snp.makeConstraints {
             $0.leading.equalTo(readingProgressLabel.snp.trailing).offset(2)
-            $0.centerY.equalTo(readingProgressLabel.snp.centerY)
+            $0.centerY.equalTo(readingProgressLabel)
+            $0.bottom.lessThanOrEqualToSuperview()
         }
     }
     

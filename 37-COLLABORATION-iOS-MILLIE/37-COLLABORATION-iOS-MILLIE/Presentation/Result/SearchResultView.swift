@@ -35,7 +35,6 @@ final class SearchResultView: BaseUIView {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = 10
-        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         layout.sectionInset = UIEdgeInsets(top: 16, left: 21, bottom: 16, right: 21)
 
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -176,21 +175,19 @@ final class SearchResultView: BaseUIView {
     override func setLayout() {
         
         navigationTitleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(63)
-            $0.leading.equalToSuperview().inset(148)
+            $0.top.equalTo(safeAreaLayoutGuide).offset(20)
+            $0.centerX.equalToSuperview()
         }
         
         navigationButton.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(63)
+            $0.centerY.equalTo(navigationTitleLabel)
             $0.leading.equalToSuperview().inset(13)
-
         }
         
         textField.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide).offset(20)
+            $0.top.equalTo(navigationTitleLabel.snp.bottom).offset(16)
             $0.centerX.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(18) // 스냅킷에서 이 설정 꼭 해주세요
-
+            $0.leading.trailing.equalToSuperview().inset(18)
         }
         
         categoryTabs.snp.makeConstraints {
