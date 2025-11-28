@@ -109,6 +109,6 @@ public final class LikeButton: UIButton {
 
 extension LikeButton {
     @objc private func isLikeButtonTapped() {
-        // 추후 구현
+        
     }
 }
