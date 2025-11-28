@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		3344185E2EC973A7004CEA66 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 3344185D2EC973A7004CEA66 /* Then */; };
 		334418612EC973B3004CEA66 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 334418602EC973B3004CEA66 /* SnapKit */; };
-		96EC98612ED82C26001AB216 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 96EC98602ED82C26001AB216 /* Kingfisher */; };
 		529FC1E92ED74FE200564FAC /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 529FC1E82ED74FE200564FAC /* Config.xcconfig */; };
+		96EC98612ED82C26001AB216 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 96EC98602ED82C26001AB216 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
