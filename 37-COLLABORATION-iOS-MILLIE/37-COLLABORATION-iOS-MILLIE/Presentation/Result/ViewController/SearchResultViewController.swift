@@ -25,6 +25,8 @@ final class SearchResultViewController: BaseUIViewController {
     
     private var postData: [Post] = Post.mockPosts
     
+    private var libraryData: [Library] = Library.mockLibraries
+    
     // MARK: - UI Components
     
     private let rootView = SearchResultView()
@@ -74,6 +76,11 @@ final class SearchResultViewController: BaseUIViewController {
             PostListCell.self,
             forCellWithReuseIdentifier: PostListCell.identifier
         )
+        
+        rootView.libraryCollectionView.register(
+            LibraryCollectionViewCell.self,
+            forCellWithReuseIdentifier: LibraryCollectionViewCell.identifier
+        )
     }
     
     // MARK: - Delegate Method
@@ -83,6 +90,8 @@ final class SearchResultViewController: BaseUIViewController {
         rootView.collectionView.dataSource = self
         rootView.postCollectionView.delegate = self
         rootView.postCollectionView.dataSource = self
+        rootView.libraryCollectionView.delegate = self
+        rootView.libraryCollectionView.dataSource = self
         rootView.categoryTabs.delegate = self
         rootView.getTextField().internalTextField.delegate = self
     }
@@ -95,6 +104,8 @@ extension SearchResultViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == rootView.postCollectionView {
             return postData.count
+        } else if collectionView == rootView.libraryCollectionView {
+            return libraryData.count
         }
         return searchResultData.books.count
     }
@@ -110,6 +121,17 @@ extension SearchResultViewController: UICollectionViewDataSource {
             
             let post = postData[indexPath.item]
             cell.configure(with: post)
+            return cell
+        } else if collectionView == rootView.libraryCollectionView {
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: LibraryCollectionViewCell.identifier,
+                for: indexPath
+            ) as? LibraryCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            
+            let library = libraryData[indexPath.item]
+            cell.configure(image: library.profileImage, name: library.name)
             return cell
         } else {
             guard let cell = collectionView.dequeueReusableCell(
@@ -136,6 +158,10 @@ extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
             let width = collectionView.bounds.width - (sectionInset * 2)
             let cellHeight: CGFloat = 132
             return CGSize(width: width, height: cellHeight)
+        } else if collectionView == rootView.libraryCollectionView {
+            let cellWidth: CGFloat = 66
+            let cellHeight: CGFloat = 130
+            return CGSize(width: cellWidth, height: cellHeight)
         } else {
             let cellWidth: CGFloat = 103
             let cellHeight: CGFloat = 230
@@ -238,6 +264,9 @@ extension SearchResultViewController: MillieCategoryTabsDelegate {
         case 2:
             rootView.showPostView()
             rootView.postCollectionView.reloadData()
+        case 3:
+            rootView.showLibraryView()
+            rootView.libraryCollectionView.reloadData()
         default:
             rootView.showBookView()
         }

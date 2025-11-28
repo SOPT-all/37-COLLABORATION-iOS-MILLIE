@@ -48,6 +48,11 @@ final class SearchResultView: BaseUIView {
     private let postTitleLabel = UILabel()
     private let postCountLabel = UILabel()
     
+    // MARK: - Library UI Components
+    
+    private let libraryTitleLabel = UILabel()
+    private let libraryCountLabel = UILabel()
+    
     lazy var postCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -57,6 +62,20 @@ final class SearchResultView: BaseUIView {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = .clear
         cv.showsVerticalScrollIndicator = false
+        return cv
+    }()
+    
+    lazy var libraryCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = 14
+        layout.minimumInteritemSpacing = 10
+        layout.sectionInset = UIEdgeInsets(top: 16, left: 20, bottom: 16, right: 20)
+        
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.backgroundColor = .clear
+        cv.showsVerticalScrollIndicator = false
+        cv.isScrollEnabled = false
         return cv
     }()
     
@@ -137,6 +156,18 @@ final class SearchResultView: BaseUIView {
             $0.textColor = UIColor(named: "millie_Purple")
         }
         
+        libraryTitleLabel.do {
+            $0.text = "서재"
+            $0.font = FontManager.headline.font
+            $0.textColor = .black
+        }
+        
+        libraryCountLabel.do {
+            $0.text = "4"
+            $0.font = FontManager.body1.font
+            $0.textColor = UIColor(named: "millie_Purple")
+        }
+        
         viewAllButton.do {
             $0.setTitle("전체 보기", for: .normal)
             $0.setTitleColor(.greyBlack, for: .normal)
@@ -168,6 +199,9 @@ final class SearchResultView: BaseUIView {
             postTitleLabel,
             postCountLabel,
             postCollectionView,
+            libraryTitleLabel,
+            libraryCountLabel,
+            libraryCollectionView,
             viewAllButton
         )
     }
@@ -275,11 +309,32 @@ final class SearchResultView: BaseUIView {
             $0.height.equalTo(38)
         }
         
+        libraryTitleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(20)
+            $0.leading.equalToSuperview().inset(20)
+        }
+        
+        libraryCountLabel.snp.makeConstraints {
+            $0.leading.equalTo(libraryTitleLabel.snp.trailing).offset(8)
+            $0.centerY.equalTo(libraryTitleLabel)
+        }
+        
+        libraryCollectionView.snp.makeConstraints {
+            $0.top.equalTo(libraryTitleLabel.snp.bottom).offset(5)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(150)
+        }
+        
         // Initially hide post UI
         postTitleLabel.isHidden = true
         postCountLabel.isHidden = true
         postCollectionView.isHidden = true
         viewAllButton.isHidden = true
+        
+        // Initially hide library UI
+        libraryTitleLabel.isHidden = true
+        libraryCountLabel.isHidden = true
+        libraryCollectionView.isHidden = true
     }
     
     // MARK: - Public Methods
@@ -311,6 +366,10 @@ final class SearchResultView: BaseUIView {
         postCollectionView.isHidden = true
         viewAllButton.isHidden = true
         
+        libraryTitleLabel.isHidden = true
+        libraryCountLabel.isHidden = true
+        libraryCollectionView.isHidden = true
+        
         scrollView.snp.remakeConstraints {
             $0.top.equalTo(categoryTabs.snp.bottom)
             $0.leading.trailing.equalToSuperview()
@@ -328,6 +387,32 @@ final class SearchResultView: BaseUIView {
         postCountLabel.isHidden = false
         postCollectionView.isHidden = false
         viewAllButton.isHidden = false
+        
+        libraryTitleLabel.isHidden = true
+        libraryCountLabel.isHidden = true
+        libraryCollectionView.isHidden = true
+        
+        scrollView.snp.remakeConstraints {
+            $0.top.equalTo(categoryTabs.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
+        }
+    }
+    
+    func showLibraryView() {
+        titleLabel.isHidden = true
+        totalBookCountLabel.isHidden = true
+        collectionView.isHidden = true
+        bannerContainerView.isHidden = true
+        
+        postTitleLabel.isHidden = true
+        postCountLabel.isHidden = true
+        postCollectionView.isHidden = true
+        viewAllButton.isHidden = true
+        
+        libraryTitleLabel.isHidden = false
+        libraryCountLabel.isHidden = false
+        libraryCollectionView.isHidden = false
         
         scrollView.snp.remakeConstraints {
             $0.top.equalTo(categoryTabs.snp.bottom)
