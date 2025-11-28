@@ -15,6 +15,7 @@ final class ReviewView: BaseUIView {
     // MARK: - Properties
     
     private var data: [ToggleReviewLikeData] = []
+    private var collectionViewHeightConstraint: Constraint?
     
     
     // MARK: - UI Components
@@ -37,6 +38,14 @@ final class ReviewView: BaseUIView {
         addSubviews(header, collectionView)
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        collectionView.collectionViewLayout.invalidateLayout()
+        let contentHeight = collectionView.collectionViewLayout.collectionViewContentSize.height
+        collectionViewHeightConstraint?.update(offset: contentHeight)
+    }
+
+    
     // MARK: - SetLayout
     
     override func setLayout() {
@@ -49,7 +58,9 @@ final class ReviewView: BaseUIView {
             $0.top.equalTo(header.snp.bottom).offset(40)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview().inset(30)
-            $0.height.equalTo(291)
+            $0.height.greaterThanOrEqualTo(291)
+            $0.width.equalToSuperview()
+            self.collectionViewHeightConstraint = $0.height.equalTo(291).constraint
         }
     }
     
@@ -65,7 +76,12 @@ final class ReviewView: BaseUIView {
 
 extension ReviewView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.bounds.width - 32, height: 128)
+        let review = data[indexPath.item]
+        let text = review.reviewContent
+        let width = collectionView.bounds.width - 32
+        let textHeight = text.getTextHeight(withConstrainedWidth: width, font: FontManager.body1.font)
+        let height = 106 + textHeight
+        return CGSize(width: width, height: height)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {

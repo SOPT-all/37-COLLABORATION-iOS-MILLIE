@@ -7,10 +7,15 @@
 
 
 protocol DetailServiceProtocol {
+    func toggleReviewLike(reviewId: Int) async -> Result<ToggleReviewLikeResponseDTO, NetworkError>
     func getBookDetailInfo(bookId: Int) async -> Result<BookDetailInfoResponseDTO, NetworkError>
 }
 
 final class DetailService: BaseService, DetailServiceProtocol {
+    func toggleReviewLike(reviewId: Int) async -> Result<ToggleReviewLikeResponseDTO, NetworkError> {
+        return await requestDecodable(target: DetailAPI.toggleReviewLike(reviewId: reviewId))
+    }
+    
     func getBookDetailInfo(bookId: Int) async -> Result<BookDetailInfoResponseDTO, NetworkError> {
         return await requestDecodable(target: DetailAPI.getBookDetailInfo(bookId: bookId))
     }

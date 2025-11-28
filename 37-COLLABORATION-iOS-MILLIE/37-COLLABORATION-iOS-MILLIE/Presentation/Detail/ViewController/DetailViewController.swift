@@ -14,9 +14,10 @@ class DetailViewController: BaseUIViewController {
     // MARK: - Properties
     var bookId: Int? = 1
     private var bookDetailInfoData: BookDetailInfoData?
+    private var toggleReviewData: ToggleReviewLikeData?
+    
     
     // MARK: - UI Components
-    let detailNavigationBarView = DetailNavigationBarView()
     
     let mainTableView = UITableView(frame: .zero, style: .grouped).then {
         $0.separatorStyle = .none
@@ -24,6 +25,9 @@ class DetailViewController: BaseUIViewController {
         $0.allowsSelection = false
         $0.keyboardDismissMode = .interactive
         $0.sectionHeaderHeight = 0
+        let navHeader = DetailNavigationBarView()
+        navHeader.frame = CGRect(x: 0, y: 26, width: 375, height: 50)
+        $0.tableHeaderView = navHeader
         $0.tableFooterView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: CGFloat.leastNormalMagnitude, height: CGFloat.leastNormalMagnitude)))
         $0.register(DetailPrimaryInfoTableViewCell.self, forCellReuseIdentifier: DetailPrimaryInfoTableViewCell.identifier)
         $0.register(DetailMillieReadingReportTableViewCell.self, forCellReuseIdentifier: DetailMillieReadingReportTableViewCell.identifier)
@@ -47,14 +51,10 @@ class DetailViewController: BaseUIViewController {
     
     override func setUI() {
         navigationController?.navigationBar.isHidden = true
-        view.addSubviews(mainTableView, detailNavigationBarView, detailBottomBarView)
+        view.addSubviews(mainTableView, detailBottomBarView)
     }
     
     override func setLayout() {
-        detailNavigationBarView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide)
-            $0.horizontalEdges.equalToSuperview()
-        }
         mainTableView.snp.makeConstraints {
             $0.top.horizontalEdges.equalToSuperview()
         }
@@ -63,12 +63,6 @@ class DetailViewController: BaseUIViewController {
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
         }
-    }
-    
-    override func addTarget() {
-        detailNavigationBarView.backButton.addTarget(self, action: #selector(touchUpInsideBackButton), for: .touchUpInside)
-        detailNavigationBarView.likeButton.addTarget(self, action: #selector(touchUpInsideLikeButton), for: .touchUpInside)
-        detailNavigationBarView.moreButton.addTarget(self, action: #selector(touchUpInsideMoreButton), for: .touchUpInside)
     }
     
     override func setDelegate() {
@@ -183,10 +177,11 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 // MARK: - Network
+
 extension DetailViewController {
     func getBookDetailInfo(bookId: Int) async {
         let result = await NetworkService.shared.detailService.getBookDetailInfo(bookId: bookId)
-        
+
         switch result {
         case .success(let data):
             guard let dto = data.data else { return }
@@ -194,6 +189,34 @@ extension DetailViewController {
             mainTableView.reloadData()
         case .failure(let error):
             print("❌ 도서 상세 정보 조회 실패: \(error)")
+        }
+    }
+    
+    @objc func handleLikeButtonTapped(_ sender: LikeButton) {
+        let reviewId = sender.reviewId
+        print("좋아요 클릭됨, reviewId = \(reviewId)")
+        Task {
+            await toggleReviewLike(reviewId)
+        }
+    }
+    
+    func toggleReviewLike(_ reviewId: Int) async {
+        let result = await NetworkService.shared.detailService.toggleReviewLike(reviewId: reviewId)
+        switch result {
+        case .success(let data):
+            guard let dto = data.data else { return }
+            toggleReviewData = dto
+            if let index = bookDetailInfoData?.reviews.firstIndex(where: { $0.reviewId == reviewId }) {
+                bookDetailInfoData?.reviews[index].liked = dto.liked
+                bookDetailInfoData?.reviews[index].likeCount = dto.likeCount
+            }
+            DispatchQueue.main.async {
+                self.mainTableView.reloadData()
+            }
+            print("👍 성공: \(data)")
+            
+        case .failure(let error):
+            print("❌ 실패: \(error)")
         }
     }
 }

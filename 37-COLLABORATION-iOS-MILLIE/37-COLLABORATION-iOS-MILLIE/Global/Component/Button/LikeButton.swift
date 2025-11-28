@@ -13,6 +13,7 @@ import SnapKit
 public final class LikeButton: UIButton {
     private var isLiked: Bool = false
     private var likeCount: Int = 0
+    var reviewId: Int = 999
     
     
     // MARK: - UI Components
@@ -101,14 +102,17 @@ public final class LikeButton: UIButton {
         container.addGestureRecognizer(tap)
     }
     
-    func setLikeCount(_ count: Int) {
+    func setLikeCount(id: Int, liked: Bool, count: Int) {
+        reviewId = id
         likeCount = count
         countLabel.text = "\(count)"
+        isLiked = liked
+        heartIconView.image = isLiked ? .iconDetailHeartSmallFill : .iconDetailHeartSmall
     }
 }
 
 extension LikeButton {
     @objc private func isLikeButtonTapped() {
-        // 추후 구현
+        UIApplication.shared.sendAction(#selector(DetailViewController.handleLikeButtonTapped(_:)), to: nil, from: self, for: nil)
     }
 }

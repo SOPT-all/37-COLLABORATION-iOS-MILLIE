@@ -55,6 +55,7 @@ final class ReviewCell: UICollectionViewCell {
         reviewLabel.do {
             $0.textColor = .greyBlack
             $0.font = FontManager.body1.font
+            $0.numberOfLines = 0
         }
         
         menuButton.do {
@@ -89,8 +90,8 @@ final class ReviewCell: UICollectionViewCell {
         }
         
         reviewLabel.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview()
             $0.top.equalTo(dateLabel.snp.bottom).offset(10)
+            $0.leading.trailing.equalToSuperview().inset(0)
         }
         
         likeButton.snp.makeConstraints {
@@ -105,6 +106,6 @@ extension ReviewCell {
         nameLabel.text = data.reviewerName
         dateLabel.text = data.createdDate
         reviewLabel.text = data.reviewContent
-        likeButton.setLikeCount(data.likeCount)
+        likeButton.setLikeCount(id: data.reviewId, liked: data.liked, count: data.likeCount)
     }
 }

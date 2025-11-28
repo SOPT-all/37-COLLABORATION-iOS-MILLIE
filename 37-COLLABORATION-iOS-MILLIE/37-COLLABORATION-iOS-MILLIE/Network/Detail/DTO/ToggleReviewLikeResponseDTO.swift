@@ -16,6 +16,6 @@ struct ToggleReviewLikeData: Decodable {
     let reviewerName: String
     let createdDate: String
     let reviewContent: String
-    let likeCount: Int
-    let liked: Bool
+    var likeCount: Int
+    var liked: Bool
 }
