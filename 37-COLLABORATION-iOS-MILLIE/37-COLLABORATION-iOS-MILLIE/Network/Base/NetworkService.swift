@@ -16,6 +16,4 @@ final class NetworkService {
     let searchService: SearchServiceProtocol = SearchService()
     let detailService: DetailServiceProtocol = DetailService()
     let categoryService: CategoryServiceProtocol = CategoryService()
-    let searchService: SearchServiceProtocol = SearchService()
-    let detailService: DetailServiceProtocol = DetailService()
 }
