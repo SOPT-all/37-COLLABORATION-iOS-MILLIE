@@ -7,16 +7,9 @@
 
 import Foundation
 
-struct BookDetailModel {
-    struct ReviewModel {
-        let reviewId: Int
-        let bookId: Int
-        let reviewerName: String
-        let createdDate: String
-        let reviewContent: String
-        let liked: Bool
-        let likeCount: Int
-    }
+typealias BookDetailInfoResponseDTO = BaseResponseDTO<BookDetailInfoData>
+
+struct BookDetailInfoData: Decodable {
     let bookId: Int
     let bookCoverImageUrl: URL
     let bookTitle: String
@@ -27,5 +20,5 @@ struct BookDetailModel {
     let totalReviewCount: Int
     let completionRate: Int
     let bookDescription: String
-    let reviews: [ReviewModel]
+    var reviews: [ToggleReviewLikeData]
 }

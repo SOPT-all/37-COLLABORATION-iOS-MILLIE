@@ -8,6 +8,7 @@ import UIKit
 
 import SnapKit
 import Then
+import Kingfisher
 
 
 final class SearchResultCell: UICollectionViewCell {
@@ -93,36 +94,37 @@ final class SearchResultCell: UICollectionViewCell {
     private func setLayout() {
         
         bookImageView.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.top.equalToSuperview().inset(10)
+            $0.top.horizontalEdges.equalToSuperview()
             $0.width.equalTo(103)
             $0.height.equalTo(150)
         }
         
         bookTitleLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(5.5)
+            $0.horizontalEdges.equalToSuperview().inset(5.5)
             $0.top.equalTo(bookImageView.snp.bottom).offset(10)
+            $0.width.equalTo(bookImageView)
         }
         
         bookAuthorLabel.snp.makeConstraints {
-            $0.leading.equalTo(bookTitleLabel)
-            $0.top.equalTo(bookTitleLabel.snp.bottom)
+            $0.horizontalEdges.equalToSuperview().inset(5.5)
+            $0.top.equalTo(bookTitleLabel.snp.bottom).offset(1)
         }
         
         readingProgressImageView.snp.makeConstraints {
-            $0.leading.equalTo(bookTitleLabel)
-            $0.top.equalTo(bookAuthorLabel.snp.bottom).offset(4)
-            $0.width.height.equalTo(15)
+            $0.leading.equalToSuperview().inset(5.5)
+            $0.size.equalTo(15)
         }
         
         readingProgressLabel.snp.makeConstraints {
-            $0.leading.equalTo(readingProgressImageView.snp.trailing).offset(2)
-            $0.centerY.equalTo(readingProgressImageView)
+            $0.top.equalTo(bookAuthorLabel.snp.bottom).offset(1)
+            $0.leading.equalTo(readingProgressImageView.snp.trailing).offset(4)
+            $0.centerY.equalTo(readingProgressImageView.snp.centerY)
+            $0.bottom.equalToSuperview()
         }
         
         totalReadingTimeLabel.snp.makeConstraints {
             $0.leading.equalTo(readingProgressLabel.snp.trailing).offset(2)
-            $0.top.equalTo(readingProgressLabel)
+            $0.centerY.equalTo(readingProgressLabel.snp.centerY)
         }
     }
     
@@ -134,7 +136,19 @@ final class SearchResultCell: UICollectionViewCell {
         readingProgressLabel.text = "\(book.completionRate)%"
         totalReadingTimeLabel.text = "| \(book.completionTime)분"
         
-        bookImageView.image = UIImage(named: "Img_result_book1")
+        if let url = URL(string: book.bookCoverImageUrl) {
+            bookImageView.kf.setImage(
+                with: url,
+                placeholder: UIImage(named: "Img_result_book1"),
+                options: [
+                    .transition(.fade(0.2)),
+                    .cacheOriginalImage
+                ]
+            )
+        } else {
+            print("이미지 URL 오류 - bookId: \(book.bookId), URL: \(book.bookCoverImageUrl)")
+        }
+        
         bookImageView.contentMode = .scaleAspectFill
     }
 }

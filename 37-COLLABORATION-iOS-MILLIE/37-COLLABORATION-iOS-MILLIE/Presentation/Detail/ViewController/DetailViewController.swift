@@ -12,41 +12,12 @@ import SnapKit
 class DetailViewController: BaseUIViewController {
     
     // MARK: - Properties
-    let bookDetailModel: BookDetailModel = BookDetailModel(
-        bookId: 1,
-        bookCoverImageUrl: URL(string: "naver.com")!,
-        bookTitle: "홍학의 자리",
-        bookAuthor: "정해연",
-        bookType: "소설",
-        publishedDate: "2021.07.21",
-        bookRate: 3.9,
-        totalReviewCount: 2,
-        completionRate: 80,
-        bookDescription: "\"이 행복이 영원할 거라고 생각한 적은 없었다. 그러나 이런 끝을 상상한 적도 없었다.\"예측 불가! 한국 미스터리 사상 전무후무한 반전! 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구",
-        reviews: [
-            BookDetailModel.ReviewModel(
-                reviewId: 1,
-                bookId: 1,
-                reviewerName: "마침표수집가",
-                createdDate: "2025.09.20",
-                reviewContent: "이야기의 흐름보다 분위기와 감정이 중심이라 호불호는 있을 듯. 하지만 저는 좋았습니다.",
-                liked: false,
-                likeCount: 58
-            ),
-            BookDetailModel.ReviewModel(
-                reviewId: 2,
-                bookId: 1,
-                reviewerName: "소다맛마시멜로우",
-                createdDate: "2025.10.28",
-                reviewContent: "하 읽은 사람들이랑 수다떨고싶다....",
-                liked: false,
-                likeCount: 126
-            ),
-        ]
-    )
+    var bookId: Int? = 1
+    private var bookDetailInfoData: BookDetailInfoData?
+    private var toggleReviewData: ToggleReviewLikeData?
+    
     
     // MARK: - UI Components
-    let detailNavigationBarView = DetailNavigationBarView()
     
     let mainTableView = UITableView(frame: .zero, style: .grouped).then {
         $0.separatorStyle = .none
@@ -54,6 +25,9 @@ class DetailViewController: BaseUIViewController {
         $0.allowsSelection = false
         $0.keyboardDismissMode = .interactive
         $0.sectionHeaderHeight = 0
+        let navHeader = DetailNavigationBarView()
+        navHeader.frame = CGRect(x: 0, y: 26, width: 375, height: 50)
+        $0.tableHeaderView = navHeader
         $0.tableFooterView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: CGFloat.leastNormalMagnitude, height: CGFloat.leastNormalMagnitude)))
         $0.register(DetailPrimaryInfoTableViewCell.self, forCellReuseIdentifier: DetailPrimaryInfoTableViewCell.identifier)
         $0.register(DetailMillieReadingReportTableViewCell.self, forCellReuseIdentifier: DetailMillieReadingReportTableViewCell.identifier)
@@ -65,15 +39,22 @@ class DetailViewController: BaseUIViewController {
     
     let detailBottomBarView = DetailBottomBarView()
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        if let bookId {
+            Task {
+                await getBookDetailInfo(bookId: bookId)
+            }
+        }
+    }
+    
     override func setUI() {
-        view.addSubviews(mainTableView, detailNavigationBarView, detailBottomBarView)
+        navigationController?.navigationBar.isHidden = true
+        view.addSubviews(mainTableView, detailBottomBarView)
     }
     
     override func setLayout() {
-        detailNavigationBarView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide)
-            $0.horizontalEdges.equalToSuperview()
-        }
         mainTableView.snp.makeConstraints {
             $0.top.horizontalEdges.equalToSuperview()
         }
@@ -84,12 +65,6 @@ class DetailViewController: BaseUIViewController {
         }
     }
     
-    override func addTarget() {
-        detailNavigationBarView.backButton.addTarget(self, action: #selector(touchUpInsideBackButton), for: .touchUpInside)
-        detailNavigationBarView.likeButton.addTarget(self, action: #selector(touchUpInsideLikeButton), for: .touchUpInside)
-        detailNavigationBarView.moreButton.addTarget(self, action: #selector(touchUpInsideMoreButton), for: .touchUpInside)
-    }
-    
     override func setDelegate() {
         mainTableView.delegate = self
         mainTableView.dataSource = self
@@ -98,7 +73,7 @@ class DetailViewController: BaseUIViewController {
 
 extension DetailViewController {
     @objc private func touchUpInsideBackButton() {
-        
+        navigationController?.popViewController(animated: true)
     }
     @objc private func touchUpInsideLikeButton() {
         
@@ -155,8 +130,12 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailPrimaryInfoTableViewCell.identifier, for: indexPath) as? DetailPrimaryInfoTableViewCell else {
                 return UITableViewCell()
             }
-            cell.configure(bookDetailModel: bookDetailModel)
-            tableView.backgroundColor = cell.bookImageView.image?.averageColor
+            if let bookDetailInfoData {
+                cell.configure(bookDetailInfoData: bookDetailInfoData)
+                cell.updateBackgroundColor = { color in
+                    tableView.backgroundColor = color
+                }
+            }
             return cell
         case .millieReadingReport:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailMillieReadingReportTableViewCell.identifier, for: indexPath) as? DetailMillieReadingReportTableViewCell else {
@@ -167,7 +146,9 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailDescriptionTableViewCell.identifier, for: indexPath) as? DetailDescriptionTableViewCell else {
                 return UITableViewCell()
             }
-            cell.configure(bookDetailModel: bookDetailModel)
+            if let bookDetailInfoData {
+                cell.configure(bookDetailInfoData: bookDetailInfoData)
+            }
             cell.reloadForNewHeight = {
                 // reloadRows로 실행하면 첫번째 터치 때 업데이트 안되는 버그가 있음 (이유는 모르겠음)
                 tableView.reloadData()
@@ -177,7 +158,9 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailReviewTableViewCell.identifier, for: indexPath) as? DetailReviewTableViewCell else {
                 return UITableViewCell()
             }
-            cell.reviewView.bind(bookDetailModel.reviews)
+            if let bookDetailInfoData {
+                cell.reviewView.bind(bookDetailInfoData.reviews)
+            }
             return cell
         case .readingData:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailReadingDataTableViewCell.identifier, for: indexPath) as? DetailReadingDataTableViewCell else {
@@ -189,6 +172,51 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
                 return UITableViewCell()
             }
             return cell
+        }
+    }
+}
+
+// MARK: - Network
+
+extension DetailViewController {
+    func getBookDetailInfo(bookId: Int) async {
+        let result = await NetworkService.shared.detailService.getBookDetailInfo(bookId: bookId)
+
+        switch result {
+        case .success(let data):
+            guard let dto = data.data else { return }
+            bookDetailInfoData = dto
+            mainTableView.reloadData()
+        case .failure(let error):
+            print("❌ 도서 상세 정보 조회 실패: \(error)")
+        }
+    }
+    
+    @objc func handleLikeButtonTapped(_ sender: LikeButton) {
+        let reviewId = sender.reviewId
+        print("좋아요 클릭됨, reviewId = \(reviewId)")
+        Task {
+            await toggleReviewLike(reviewId)
+        }
+    }
+    
+    func toggleReviewLike(_ reviewId: Int) async {
+        let result = await NetworkService.shared.detailService.toggleReviewLike(reviewId: reviewId)
+        switch result {
+        case .success(let data):
+            guard let dto = data.data else { return }
+            toggleReviewData = dto
+            if let index = bookDetailInfoData?.reviews.firstIndex(where: { $0.reviewId == reviewId }) {
+                bookDetailInfoData?.reviews[index].liked = dto.liked
+                bookDetailInfoData?.reviews[index].likeCount = dto.likeCount
+            }
+            DispatchQueue.main.async {
+                self.mainTableView.reloadData()
+            }
+            print("👍 성공: \(data)")
+            
+        case .failure(let error):
+            print("❌ 실패: \(error)")
         }
     }
 }

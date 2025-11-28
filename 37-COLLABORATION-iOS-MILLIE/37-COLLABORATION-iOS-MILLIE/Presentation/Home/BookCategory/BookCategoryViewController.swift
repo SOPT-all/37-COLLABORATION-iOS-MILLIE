@@ -33,38 +33,66 @@ final class BookCategoryViewController: BaseUIViewController {
     }
 }
 
-//MARK: - Networking
+// MARK: - Networking
 
 extension BookCategoryViewController {
-    /// 실제 API 나중에 붙일 함수부분 지금은 SearchHomeViewController에서 더미데이터 받고있음
-    private func fetchCategories() {
-        categories = BookCategoryDummy.categories
-        mainView.collectionView.reloadData()
+
+    func fetchCategories() {
+        Task {
+            let result = await NetworkService.shared.categoryService.getCategoryList()
+
+            switch result {
+            case .success(let responseDTO):
+
+                guard let items = responseDTO.data else { return }
+
+                self.categories = items.map { $0.toDomain() }
+
+                DispatchQueue.main.async {
+                    self.mainView.collectionView.reloadData()
+                }
+
+            case .failure(let error):
+                print("❌ BookCategoryViewController Category API Error:", error.localizedDescription)
+            }
+        }
     }
 }
 
-//MARK: - collection DataSource
+// MARK: - UICollectionViewDataSource
 
 extension BookCategoryViewController: UICollectionViewDataSource {
+
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int
     ) -> Int {
-        categories.count
+        return categories.count
     }
-    
+
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BookCategoryCell.identifier,
-                                                            for: indexPath
+
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: BookCategoryCell.identifier,
+            for: indexPath
         ) as? BookCategoryCell else { return UICollectionViewCell() }
-        
+
         let item = categories[indexPath.item]
         
-        cell.configure(
-            title: item.title, description: item.description, image: UIImage(named: item.imageURL)
-        )
-        
+        let isRecent = indexPath.item == 0
+        cell.configure(with: item, isRecent: isRecent)
+
+        if let url = URL(string: item.imageURL) {
+            URLSession.shared.dataTask(with: url) { data, _, _ in
+                if let data = data, let image = UIImage(data: data) {
+                    DispatchQueue.main.async {
+                        cell.setImage(image)
+                    }
+                }
+            }.resume()
+        }
+
         return cell
     }
 }
